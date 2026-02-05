@@ -1,4 +1,4 @@
-// src/app/admin/layout.tsx - UPDATED
+// src/app/admin/layout.tsx - UPDATED for super-admin
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import AdminSidebar from "@/components/admin/AdminSidebar";
@@ -11,14 +11,17 @@ export default async function AdminLayout({
 }) {
   const session = await auth();
 
-  if (!session || session.user?.role !== "admin") {
+  // Define allowed admin roles
+  const allowedRoles = ["admin", "lab-admin", "super-admin"];
+  
+  if (!session || !allowedRoles.includes(session.user?.role as string)) {
     redirect("/auth/login?error=unauthorized");
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Sidebar with lower z-index */}
-      <AdminSidebar />
+      <AdminSidebar userRole={session.user?.role as string} />
       
       {/* Main content area */}
       <div className="ml-64 relative">

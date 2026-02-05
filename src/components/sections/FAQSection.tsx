@@ -38,13 +38,13 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="py-16 bg-white">
-      <div className="container-custom px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+    <section className="py-8 md:py-12 bg-white">
+      <div className="container-custom px-4 md:px-6">
+        <div className="text-center mb-8 md:mb-10">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-sm md:text-base">
             Got questions? We&apos;re here to help
           </p>
         </div>
@@ -53,38 +53,41 @@ const FAQSection = () => {
           {faqs.map((faq, index) => (
             <div 
               key={index} 
-              className="mb-4 border border-gray-200 rounded-xl overflow-hidden"
+              className="mb-3 border border-gray-200 rounded-lg overflow-hidden"
             >
               <button
-                className="w-full text-left p-6 bg-gray-50 border-t border-gray-200 hover:bg-gray-100 transition duration-300 flex justify-between items-center"
+                className="w-full text-left p-3 md:p-4 bg-gray-50 hover:bg-gray-100 transition duration-300 flex justify-between items-center gap-3"
                 onClick={() => toggleFAQ(index)}
+                aria-expanded={openIndex === index}
               >
-                <span className="font-semibold text-lg pr-4">{faq.question}</span>
+                <span className="font-semibold text-sm md:text-base pr-2 text-left">
+                  {faq.question}
+                </span>
                 {openIndex === index ? (
-                  <FiChevronUp className="text-blue-600 flex-shrink-0" />
+                  <FiChevronUp className="text-blue-600 flex-shrink-0 w-4 h-4 md:w-5 md:h-5" />
                 ) : (
-                  <FiChevronDown className="text-gray-500 flex-shrink-0" />
+                  <FiChevronDown className="text-gray-500 flex-shrink-0 w-4 h-4 md:w-5 md:h-5" />
                 )}
               </button>
               
               {openIndex === index && (
-                <div className="p-6 bg-white">
-                  <p className="text-gray-700">{faq.answer}</p>
+                <div className="p-3 md:p-4 bg-white">
+                  <p className="text-gray-700 text-sm md:text-base">{faq.answer}</p>
                 </div>
               )}
             </div>
           ))}
         </div>
         
-        <div className="text-center mt-12">
-          <p className="text-gray-600 mb-6">
+        <div className="text-center mt-8">
+          <p className="text-gray-600 mb-4 text-sm">
             Still have questions? Contact our support team
           </p>
-          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white border-0 font-semibold py-3 px-8 rounded-lg">
+          <div className="flex flex-col sm:flex-row justify-center gap-3">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white border-0 font-semibold py-2.5 px-6 rounded-lg text-sm transition w-full sm:w-auto">
               Call Now: 1800-123-4567
             </button>
-            <button className="bg-white hover:bg-gray-50 text-blue-600 font-semibold py-3 px-8 rounded-lg border border-blue-600">
+            <button className="bg-white hover:bg-gray-50 text-blue-600 font-semibold py-2.5 px-6 rounded-lg border border-blue-600 text-sm transition w-full sm:w-auto">
               WhatsApp Support
             </button>
           </div>

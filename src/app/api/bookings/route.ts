@@ -112,6 +112,26 @@ export async function POST(request: NextRequest) {
     }
 
     console.log("✅ Lab:", lab.name);
+console.log("🧪 SERVICE CATEGORY:", service.category);
+
+
+    // 🚫 MRI / CT cannot be home service
+const restrictedServices = ["mri", "ct"];
+
+if (
+  restrictedServices.includes(service.category) &&
+  body.appointmentType === "home-service"
+) {
+  return NextResponse.json(
+    {
+      success: false,
+      message: "Home service is not allowed for MRI / CT scans",
+    },
+    { status: 400 }
+  );
+}
+
+
 
     // Calculate amounts
     const baseAmount = service.discountedPrice || service.price || 2500;
@@ -152,10 +172,13 @@ export async function POST(request: NextRequest) {
       appointmentType: body.appointmentType || "lab-visit",
       homeServiceAddress: body.homeServiceAddress || null,
       homeServicePincode: body.homeServicePincode || null,
-      doctorReferral: body.doctorReferral || false,
-      doctorName: body.doctorName || null,
-      symptoms: body.symptoms || null,
-      previousReports: body.previousReports || null,
+    medicalInfo: {
+  symptoms: body.symptoms || null,
+  previousReports: body.previousReports || null,
+  doctorReferral: body.doctorReferral || false,
+  doctorName: body.doctorName || null,
+},
+
       specialInstructions: body.specialInstructions || null,
       baseAmount,
       homeServiceCharge,

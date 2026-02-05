@@ -85,7 +85,7 @@ export default function CTScanPage() {
 
               <h3 className="text-xl font-bold mb-4">What's Included</h3>
               <ul className="space-y-3">
-                {service.features.map((feature, index) => (
+                {service.features.map((feature: string, index: number) => (
                   <li key={index} className="flex items-center">
                     <FiCheck className="text-green-500 mr-3" />
                     <span>{feature}</span>
@@ -100,7 +100,7 @@ export default function CTScanPage() {
                 Types of CT Scans Available
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {service.testDetails.map((test, index) => (
+                {service.testDetails.map((test: string, index: number) => (
                   <div
                     key={index}
                     className="flex items-center p-4 border border-gray-200 rounded-lg"
@@ -140,7 +140,7 @@ export default function CTScanPage() {
                 Frequently Asked Questions
               </h2>
               <div className="space-y-6">
-                {service.faqs.map((faq, index) => (
+                {service.faqs.map((faq: any, index: number) => (
                   <div
                     key={index}
                     className="border-b border-gray-200 pb-6 last:border-0"

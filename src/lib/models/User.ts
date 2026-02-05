@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   role: {
     type: String,
-    enum: ["user", "admin", "lab-admin"],
+    enum: ["user", "admin", "lab-admin", "super-admin"], // Added super-admin
     default: "user",
   },
   emailVerified: { type: Date },

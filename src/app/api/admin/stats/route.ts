@@ -12,7 +12,8 @@ export async function GET(request: NextRequest) {
     // 1. Authenticate admin
     const session = await auth();
     
-    if (!session || session.user?.role !== 'admin') {
+    const allowedRoles = ["admin", "super-admin"];
+if (!session || !allowedRoles.includes(session.user?.role as string)) { 
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

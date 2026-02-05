@@ -16,6 +16,8 @@ import {
 } from "react-icons/fi";
 import { signOut } from "next-auth/react";
 
+
+
 const adminNavItems = [
   { name: "Dashboard", href: "/admin", icon: FiHome },
   { name: "Bookings", href: "/admin/bookings", icon: FiCalendar },
@@ -27,7 +29,13 @@ const adminNavItems = [
   { name: "Settings", href: "/admin/settings", icon: FiSettings },
 ];
 
-export default function AdminSidebar() {
+interface AdminSidebarProps {
+  userRole?: string;
+}
+
+export default function AdminSidebar({ userRole }: AdminSidebarProps) {
+    
+
   const pathname = usePathname();
 
   return (

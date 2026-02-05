@@ -12,7 +12,7 @@ import {
 import Button from "@/components/ui/Button";
 
 export default function HealthCheckupPage() {
-  const service = servicesData["health-checkup"];
+  const service = servicesData["health-packages"];
 
   return (
     <div className="pt-30 pb-20">
@@ -92,7 +92,7 @@ export default function HealthCheckupPage() {
                 What's Included (80+ Tests)
               </h3>
               <ul className="space-y-3">
-                {service.features.map((feature, index) => (
+                {service.features.map((feature: string, index: number) => (
                   <li key={index} className="flex items-center">
                     <FiCheck className="text-green-500 mr-3" />
                     <span>{feature}</span>
@@ -116,7 +116,7 @@ export default function HealthCheckupPage() {
                   "Those with high stress levels",
                   "Pre-employment screening",
                   "Annual preventive health check",
-                ].map((item, index) => (
+                ].map((item: string, index: number) => (
                   <div key={index} className="flex items-start">
                     <FiStar className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                     <span className="text-sm text-green-800">{item}</span>
@@ -140,7 +140,7 @@ export default function HealthCheckupPage() {
                   "Cost-saving in long term",
                   "Better quality of life",
                   "Increased life expectancy",
-                ].map((item, index) => (
+                ].map((item: string, index: number) => (
                   <div key={index} className="flex items-start">
                     <FiCheck className="text-green-500 mt-1 mr-2 flex-shrink-0" />
                     <span className="text-sm">{item}</span>
@@ -155,7 +155,7 @@ export default function HealthCheckupPage() {
                 Available Health Packages
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {service.packages.map((pkg, index) => (
+                {service.packages.map((pkg: any, index: number) => (
                   <div
                     key={index}
                     className="border border-gray-200 rounded-lg p-6 hover:border-green-300 hover:shadow-lg transition duration-300"
@@ -165,7 +165,7 @@ export default function HealthCheckupPage() {
                       ₹{pkg.price}
                     </div>
                     <ul className="space-y-2 mb-6">
-                      {pkg.tests.slice(0, 4).map((test, idx) => (
+                      {pkg.tests.slice(0, 4).map((test: string, idx: number) => (
                         <li key={idx} className="flex items-center text-sm">
                           <FiCheck className="text-green-500 mr-2" size={14} />
                           {test}
@@ -210,7 +210,7 @@ export default function HealthCheckupPage() {
                       "Kidney Function Tests",
                       "Thyroid Profile (TSH, T3, T4)",
                       "Vitamin D & B12 Levels",
-                    ].map((test, idx) => (
+                    ].map((test: string, idx: number) => (
                       <li key={idx} className="flex items-center">
                         <FiHeart className="text-red-400 mr-2" size={14} />
                         {test}
@@ -232,7 +232,7 @@ export default function HealthCheckupPage() {
                       "Iron Studies",
                       "Calcium & Phosphorus",
                       "Doctor Consultation",
-                    ].map((test, idx) => (
+                    ].map((test: string, idx: number) => (
                       <li key={idx} className="flex items-center">
                         <FiUsers className="text-blue-400 mr-2" size={14} />
                         {test}
@@ -285,7 +285,7 @@ export default function HealthCheckupPage() {
                 Frequently Asked Questions
               </h2>
               <div className="space-y-6">
-                {service.faqs.map((faq, index) => (
+                {service.faqs.map((faq: any, index: number) => (
                   <div
                     key={index}
                     className="border-b border-gray-200 pb-6 last:border-0"

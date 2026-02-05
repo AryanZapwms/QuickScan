@@ -16,7 +16,7 @@ export const Card = ({ children, className = '' }: CardProps) => {
 
 interface ServiceCardProps {
   service: {
-    id: number;
+    id: string | number;
     name: string;
     originalPrice: number;
     discountedPrice: number;

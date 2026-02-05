@@ -6,15 +6,11 @@ import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/database";
 import User from "@/lib/models/User";
+import { authConfig } from "./auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   adapter: MongoDBAdapter(clientPromise),
-  session: {
-    strategy: "jwt",
-  },
-  pages: {
-    signIn: "/auth/login",
-  },
   providers: [
     Credentials({
       name: "credentials",
@@ -41,6 +37,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         );
 
         if (!isPasswordValid) {
+          console.log("Password is invalid  " + isPasswordValid);
           return null;
         }
 
@@ -55,22 +52,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
-        token.phone = user.phone;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
-        session.user.phone = token.phone as string;
-      }
-      return session;
-    },
-  },
 });

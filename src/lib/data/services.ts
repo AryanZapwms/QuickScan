@@ -1,171 +1,441 @@
-export const servicesData = {
-   'mri-scan': {
-    slug: 'mri-scan',
-    name: 'MRI Scan (Magnetic Resonance Imaging)',
-    title: 'MRI Scan (Magnetic Resonance Imaging)',
-    description: 'Advanced imaging technique for detailed view of organs and tissues without radiation',
-    price: 2500,
+export interface ServiceItem {
+  id: string;
+  name: string;
+  price?: number;
+  discountedPrice?: number;
+  features?: string[];
+  image?: string;
+  isPopular?: boolean;
+}
+
+export interface ServiceCategory {
+  id: string;
+  title: string;
+  description: string;
+  services: ServiceItem[];
+}
+
+export const PATHOLOGY_SERVICES: ServiceItem[] = [
+  {
+    id: "blood-tests",
+    name: "Blood tests & panels",
+    features: ["CBC", "Hemoglobin", "Blood Sugar", "Platelet Count"],
+    price: 999,
+    discountedPrice: 499,
+    isPopular: true,
+  },
+  {
+    id: "urine-stool",
+    name: "Urine & stool tests",
+    features: ["Routine Analysis", "Culture & Sensitivity", "Microscopy"],
+    price: 500,
+    discountedPrice: 299,
+  },
+  {
+    id: "thyroid-lipid-diabetes",
+    name: "Thyroid, Lipid, Diabetes tests",
+    features: ["TSH, T3, T4", "Cholesterol Profile", "HbA1c"],
+    price: 1500,
+    discountedPrice: 899,
+    isPopular: true,
+  },
+  {
+    id: "health-packages",
+    name: "Health checkup packages",
+    features: ["Full Body Checkup", "Senior Drug Package", "Women's Health"],
+    price: 4999,
+    discountedPrice: 2499,
+    isPopular: true,
+  },
+  {
+    id: "home-collection",
+    name: "Home sample collection",
+    features: ["Safe & Hygienic", "On-time Collection", "Expert Phlebotomists"],
+    price: 200,
+    discountedPrice: 0,
+  },
+  {
+    id: "lab-visit",
+    name: "Lab visit booking",
+    features: ["Zero Waiting Time", "NABL Accredited Labs", "Digital Reports"],
+    price: 0,
+    discountedPrice: 0,
+  },
+];
+
+export const RADIOLOGY_SERVICES: ServiceItem[] = [
+  {
+    id: "ct-scan",
+    name: "CT Scan",
+    features: ["High Resolution", "Contrast/Non-Contrast", "Brain/Chest/Abdomen"],
+    price: 3500,
     discountedPrice: 2500,
-    originalPrice: 3656,
-    features: [
-      '1.5T or 3T High-Resolution MRI Machine',
-      'Expert Radiologist Interpretation',
-      'Digital Report with Images',
-      'Same Day Report Available',
-      'No Radiation Exposure',
-      'Free Digital Report Storage'
-    ],
-    testDetails: [
-      'Brain MRI',
-      'Spine MRI (Cervical, Thoracic, Lumbar)',
-      'Joint MRI (Knee, Shoulder, Ankle)',
-      'Abdomen & Pelvis MRI',
-      'Cardiac MRI',
-      'Angiography MRI'
-    ],
-    preparation: 'No special preparation required. Remove all metal objects. Inform about any implants or pacemakers.',
-    reportTime: '24-48 hours (Same day for emergencies)',
-    sampleRequired: 'Not Applicable',
-    homeService: 'Available in metro cities',
+    isPopular: true,
+    image: "/images/ct-scan.jpg"
+  },
+  {
+    id: "mri",
+    name: "MRI",
+    features: ["1.5T & 3T MRI", "Brain/Spine/Joints", "Claustrophobia Friendly"],
+    price: 6500,
+    discountedPrice: 3500,
+    isPopular: true,
+     image: "/images/mri.jpg"
+  },
+  {
+    id: "pet-ct",
+    name: "PET-CT",
+    features: ["Whole Body Scan", "Oncology/Cancer Screening", "Advanced Technology"],
+    price: 15000,
+    discountedPrice: 11999,
+  },
+  {
+    id: "x-ray",
+    name: "X-Ray",
+    features: ["Digital X-Ray", "Chest/Bones/Joints", "Instant Prints"],
+    price: 800,
+    discountedPrice: 400,
+     image: "/images/xray.jpg"
+  },
+  {
+    id: "ultrasound",
+    name: "Ultrasound (Sono)",
+    features: ["Abdomen/Pelvis", "Pregnancy Scans", "Doppler Studies"],
+    price: 1800,
+    discountedPrice: 1200,
+  },
+  {
+    id: "mammography",
+    name: "Mammography",
+    features: ["Digital Mammography", "Breast Cancer Screening", "Female Technicians"],
+    price: 2500,
+    discountedPrice: 1800,
+  },
+  {
+    id: "ecg-echo",
+    name: "ECG / Echo",
+    features: ["Cardiac Screening", "Detailed Heart Function", "Cardiologist Report"],
+    price: 2000,
+    discountedPrice: 1500,
+  },
+];
+
+export const ALL_SERVICES_DATA = {
+  pathology: {
+    title: "Pathology / Lab Services",
+    description: "Comprehensive range of diagnostic blood tests and health packages.",
+    items: PATHOLOGY_SERVICES
+  },
+  radiology: {
+    title: "Radiology / Imaging Services",
+    description: "Advanced imaging technology including MRI, CT, X-Ray and more.",
+    items: RADIOLOGY_SERVICES
+  }
+};
+
+export const servicesData: Record<string, any> = {
+  "mri": {
+    id: "mri",
+    title: "MRI Scan Services",
+    description: "High-field 1.5T & 3T MRI scans for precise diagnosis of brain, spine, joints, and soft tissues.",
+    price: 3500,
+    originalPrice: 6500,
+    discountedPrice: 3500,
+    reportTime: "24 Hours",
+    sampleRequired: "None",
+    homeService: "Not Available",
+    preparation: "Remove all metal objects (jewelry, watches, keys). Inform doctor if you have pacemakers or implants. 4-6 hours fasting for abdominal scans.",
+    features: ["1.5T & 3T MRI Available", "Claustrophobia Friendly Tunnel", "Expert Radiologist Reporting", "Same Day Digital Reports"],
+    testDetails: ["MRI Brain / Head", "MRI Cerivcal / Lumbar Spine", "MRI Knee / Shoulder / Joint", "MRI Abdomen / Pelvis", "MRI Angiography"],
     faqs: [
       {
-        question: 'Is MRI scan painful?',
-        answer: 'No, MRI is completely painless. You may hear loud tapping noises during the scan.'
+        question: "Is MRI safe?",
+        answer: "Yes, MRI uses magnetic fields and radio waves, not ionizing radiation. It is generally safe, but please inform us if you have any metal implants."
       },
       {
-        question: 'How long does MRI take?',
-        answer: '15-45 minutes depending on the body part being scanned.'
+        question: "How long does an MRI scan take?",
+        answer: "Most scans take between 15 to 45 minutes, depending on the body part being scanned."
       },
       {
-        question: 'Is there any radiation in MRI?',
-        answer: 'No, MRI uses magnetic fields and radio waves, not ionizing radiation.'
-      },
-      {
-        question: 'Can I eat before MRI?',
-        answer: 'Yes, unless it\'s an abdominal MRI where fasting may be required.'
+        question: "Do I need contrast dye?",
+        answer: "Contrast is used only for specific cases to get clearer images. Your doctor will advise if it is needed."
       }
     ]
   },
-   'ct-scan': {
-    slug: 'ct-scan',
-    name: 'CT Scan (Computed Tomography)',
-    title: 'CT Scan (Computed Tomography)',
-    description: 'Advanced X-ray imaging providing detailed cross-sectional views of the body',
-    price: 2250,
-    discountedPrice: 2250,
-    originalPrice: 3656,
-    features: [
-      '128 Slice CT Scanner',
-      '3D Reconstruction Available',
-      'Contrast & Non-Contrast Studies',
-      'Digital Images & Report',
-      'Quick Results',
-      'Low Radiation Protocols'
-    ],
-    testDetails: [
-      'CT Brain',
-      'CT Chest',
-      'CT Abdomen & Pelvis',
-      'CT Angiography',
-      'CT Coronary Angiography',
-      'CT Virtual Colonoscopy'
-    ],
-    preparation: 'Fasting required for contrast studies. Inform about kidney function and allergies.',
-    reportTime: '24 hours (4-6 hours for emergencies)',
-    sampleRequired: 'Not Applicable',
-    homeService: 'Not Available (Fixed machine required)',
+  "ct-scan": {
+    id: "ct-scan",
+    title: "CT Scan Services",
+    description: "Advanced multi-slice CT Scan for detailed imaging of bones, blood vessels, and internal organs.",
+    price: 2500,
+    originalPrice: 3500,
+    discountedPrice: 2500,
+    reportTime: "Same Day",
+    sampleRequired: "None",
+    homeService: "Not Available",
+    preparation: "Wear loose clothing. Remove metal objects. 4-6 hours fasting required for contrast CT scans. Drink plenty of water before and after.",
+    features: ["128 Slice CT Scanner", "Low Radiation Dose", "High Resolution Imaging", "3D Reconstruction Available"],
+    testDetails: ["CT Brain / Head", "CT Chest / Thorax / HRCT", "CT Abdomen / Pelvis", "CT KUB (Kidney, Ureter, Bladder)", "CT Angiography"],
     faqs: [
       {
-        question: 'What is the difference between CT and MRI?',
-        answer: 'CT uses X-rays, MRI uses magnetic fields. CT is better for bones, MRI for soft tissues.'
+        question: "How is CT different from MRI?",
+        answer: "CT uses X-rays and is faster, better for bones and chest. MRI uses magnets and is better for soft tissues and brain."
       },
       {
-        question: 'Is CT scan safe?',
-        answer: 'Yes, modern CT uses minimal radiation with advanced safety protocols.'
+        question: "Is the radiation harmful?",
+        answer: "We use low-dose protocols to minimize radiation exposure while maintaining image quality. The benefit of accurate diagnosis outweighs the small risk."
       },
       {
-        question: 'How long does CT scan take?',
-        answer: '5-10 minutes for most scans.'
-      },
-      {
-        question: 'Can I drive after CT scan?',
-        answer: 'Yes, unless sedatives were given for the procedure.'
+        question: "Can I eat before a CT scan?",
+        answer: "For non-contrast scans, you can eat. For contrast scans, 4 hours fasting is required."
       }
     ]
   },
- 'health-checkup': {
-  slug: 'health-checkup',
-  name: 'Full Body Health Checkup',
-  title: 'Full Body Health Checkup',
-  description: 'Comprehensive preventive health screening with 80+ tests',
-  price: 3500,
-  discountedPrice: 3500,
-  originalPrice: 4050,
-  features: [
-    '80+ Comprehensive Tests',
-    'Complete Blood Count (CBC)',
-    'Liver & Kidney Function Tests',
-    'Cardiac Risk Markers',
-    'Thyroid Profile',
-    'Vitamin D & B12 Levels',
-    'Diabetes Screening',
-    'Doctor Consultation Included'
-  ],
-  testDetails: [
-    'Complete Blood Count (CBC)',
-    'Lipid Profile',
-    'Liver Function Test (LFT)',
-    'Kidney Function Test (KFT)',
-    'Thyroid Profile (TSH, T3, T4)',
-    'Diabetes Screening (HbA1c, Fasting Sugar)',
-    'Vitamin D & B12 Levels',
-    'Electrolytes',
-    'Urine Routine & Microscopy',
-    'ECG',
-    'Doctor Consultation'
-  ],
-  preparation: '8-12 hours fasting required. Drink water normally.',
-  reportTime: '24-48 hours',
-  sampleRequired: 'Blood & Urine',
-  homeService: 'Available (Free in metro cities)',
-  faqs: [
-    {
-      question: 'How long does the checkup take?',
-      answer: 'Approximately 2-3 hours including sample collection and ECG.'
-    },
-    {
-      question: 'Is fasting required?',
-      answer: 'Yes, 8-12 hours fasting is required for accurate results.'
-    },
-    {
-      question: 'Can I drink water before the test?',
-      answer: 'Yes, you can drink normal water during fasting.'
-    },
-    {
-      question: 'When will I get my reports?',
-      answer: 'Within 24-48 hours. Digital reports will be sent to your email.'
-    },
-    {
-      question: 'Is doctor consultation included?',
-      answer: 'Yes, a free post-report doctor consultation is included.'
-    }
-  ],
-  packages: [
-    {
-      name: 'Basic Health Checkup',
-      price: 1999,
-      tests: ['CBC', 'Blood Sugar', 'Lipid Profile', 'Urine Routine']
-    },
-    {
-      name: 'Comprehensive Checkup',
-      price: 3500,
-      tests: ['80+ Tests', 'ECG', 'Doctor Consultation', 'All Basic Tests']
-    },
-    {
-      name: 'Executive Health Checkup',
-      price: 6500,
-      tests: ['100+ Tests', 'Stress Test', 'Advanced Cardiac Markers', 'Full Body Analysis']
-    }
-  ]
-}
-}
+  "health-packages": {
+    id: "health-packages",
+    title: "Full Body Health Checkup",
+    description: "Comprehensive health assessment packages to monitor your well-being and detect potential issues early.",
+    price: 1499,
+    originalPrice: 3999,
+    discountedPrice: 1499,
+    reportTime: "24-48 Hours",
+    sampleRequired: "Blood & Urine",
+    homeService: "Available (Free in Metro Areas)",
+    preparation: "10-12 hours overnight fasting is mandatory (water is allowed). Avoid alcohol for 24 hours. Wear loose sleeves for blood draw.",
+    features: ["80+ Parameters Covered", "Free Home Sample Collection", "Doctor Consultation Included", "Digital & Hard Copy Reports"],
+    packages: [
+      {
+        name: "Basic Health Check",
+        price: 999,
+        tests: ["CBC", "Diabetes Screen (Random Sugar)", "Cholesterol (Total)", "Kidney Screen (Creatinine)"]
+      },
+      {
+        name: "Standard Full Body Check",
+        price: 1499,
+        tests: ["CBC + ESR", "Diabetes (Fasting + HbA1c)", "Lipid Profile", "Liver Function Test", "Kidney Function Test", "Thyroid (TSH)"]
+      },
+      {
+        name: "Premium Senior Citizen Package",
+        price: 2499,
+        tests: ["Complete Hemogram", "Advanced Diabetes", "Cardiac Risk Markers", "Vitamin D & B12", "Bone Health", "Iron Profile"]
+      }
+    ],
+    faqs: [
+      {
+        question: "Why is fasting required?",
+        answer: "Fasting ensures accurate results for blood sugar, cholesterol, and other metabolic tests which are affected by food intake."
+      },
+      {
+        question: "Can I take my medicines?",
+        answer: "Yes, you can take regular medicines with water, unless specifically advised otherwise by your doctor."
+      },
+      {
+        question: "Will a doctor review my report?",
+        answer: "Yes, all our health packages include a complimentary consultation with a doctor to explain your reports."
+      }
+    ]
+  },
+  "blood-tests": {
+    id: "blood-tests",
+    title: "Blood Tests & Panels",
+    description: "Wide range of blood tests for accurate diagnosis of various conditions.",
+    price: 499,
+    originalPrice: 999,
+    discountedPrice: 499,
+    reportTime: "12-24 Hours",
+    sampleRequired: "Blood",
+    homeService: "Available",
+    preparation: "Fasting may be required depending on the specific test. Generally 8-10 hours fasting for sugar and lipid profiles.",
+    features: ["NABL Accredited Labs", "Painless Sample Collection", "Digital Reports via Email/WhatsApp", "Home Collection Available"],
+    testDetails: ["Complete Blood Count (CBC)", "Diabetes Screening (HbA1c)", "Thyroid Profile", "Lipid Profile", "Liver Function Test"],
+    faqs: [
+      {
+        question: "Is home collection safe?",
+        answer: "Yes, our phlebotomists follow strict hygiene protocols and use sterile, single-use kits."
+      },
+      {
+        question: "When will I get my report?",
+        answer: "Most routine blood test reports are available within 24 hours."
+      }
+    ]
+  },
+  "urine-stool": {
+    id: "urine-stool",
+    title: "Urine & Stool Tests",
+    description: "Routine and specialized analysis for infection and metabolic disorders.",
+    price: 299,
+    originalPrice: 500,
+    discountedPrice: 299,
+    reportTime: "24 Hours",
+    sampleRequired: "Urine / Stool",
+    homeService: "Available",
+    preparation: "Collect the mid-stream urine sample in the provided sterile container. For stool tests, follow specific instructions.",
+    features: ["Sterile Containers Provided", "Microscopic Analysis", "Culture & Sensitivity Options", "Quick Reporting"],
+    testDetails: ["Urine Routine & Microscopy", "Urine Culture", "Stool Routine", "Stool Occult Blood"],
+    faqs: [
+      {
+        question: "How do I collect the sample?",
+        answer: "We provide sterile containers. For urine, collect the mid-stream sample. For stool, a small quantity is sufficient."
+      }
+    ]
+  },
+  "thyroid-lipid-diabetes": {
+    id: "thyroid-lipid-diabetes",
+    title: "Thyroid, Lipid & Diabetes",
+    description: "Specialized monitoring for chronic lifestyle conditions.",
+    price: 899,
+    originalPrice: 1500,
+    discountedPrice: 899,
+    reportTime: "24 Hours",
+    sampleRequired: "Blood",
+    homeService: "Available",
+    preparation: "10-12 hours fasting is mandatory for Lipid Profile and Fasting Blood Sugar.",
+    features: ["Comprehensive Metabolic Review", "Cardiac Risk Assessment", "Thyroid Function Monitoring", "Trend Analysis"],
+    testDetails: ["TSH, T3, T4", "Total Cholesterol, HDL, LDL", "Fasting & PP Blood Sugar", "HbA1c"],
+    faqs: [
+      {
+        question: "Can I drink water during fasting?",
+        answer: "Yes, plain water is allowed. Avoid tea, coffee, or any other beverages."
+      }
+    ]
+  },
+  "home-collection": {
+    id: "home-collection",
+    title: "Home Sample Collection",
+    description: "Convenient lab testing from the comfort of your home.",
+    price: 0,
+    originalPrice: 200,
+    discountedPrice: 0,
+    reportTime: "Varies by Test",
+    sampleRequired: "Varies",
+    homeService: "Yes",
+    preparation: "As per the specific test requirements.",
+    features: ["Certified Phlebotomists", "On-time Arrival", "Hygienic Procedures", "No Visiting Charges"],
+    testDetails: ["Book any blood/urine test", "Select time slot", "Get reports online"],
+    faqs: [
+      {
+        question: "Is there a visiting charge?",
+        answer: "Home collection is currently free for orders above ₹500."
+      }
+    ]
+  },
+  "lab-visit": {
+    id: "lab-visit",
+    title: "Lab Visit Booking",
+    description: "Book an appointment at our nearest diagnostic center to skip the queue.",
+    price: 0,
+    originalPrice: 0,
+    discountedPrice: 0,
+    reportTime: "Varies",
+    sampleRequired: "N/A",
+    homeService: "N/A",
+    preparation: "Reach 10 minutes before your slot.",
+    features: ["Zero Waiting Time", "Premium Lounge Access", "Consultation support", "Wheelchair Access"],
+    testDetails: ["Priority Service", "Meet Specialists", "Instant Processing"],
+    faqs: [
+      {
+        question: "Do I need an appointment?",
+        answer: "Walking-ins are welcome, but booking ensures zero waiting time."
+      }
+    ]
+  },
+  "pet-ct": {
+    id: "pet-ct",
+    title: "PET-CT Scan",
+    description: "Advanced whole-body imaging for oncology and cancer screening.",
+    price: 11999,
+    originalPrice: 15000,
+    discountedPrice: 11999,
+    reportTime: "24-48 Hours",
+    sampleRequired: "None",
+    homeService: "Not Available",
+    preparation: "6 hours fasting. Avoid strenuous activity 24 hours prior. Low carb diet a day before.",
+    features: ["Whole Body Scan", "FDG Contrast", "Cancer Staging", "Monitor Treatment Response"],
+    testDetails: ["Whole Body PET-CT", "PSMA PET (Prostate)", "DOTA PET (Neuroendocrine)"],
+    faqs: [
+      {
+        question: "How long does it take?",
+        answer: "The entire process including preparation uptake time takes about 3-4 hours."
+      }
+    ]
+  },
+  "x-ray": {
+    id: "x-ray",
+    title: "Digital X-Ray",
+    description: "Quick and high-quality digital radiography for bones and chest.",
+    price: 400,
+    originalPrice: 800,
+    discountedPrice: 400,
+    reportTime: "1 Hour",
+    sampleRequired: "None",
+    homeService: "Portable X-Ray Available (Selected Areas)",
+    preparation: "Remove metal objects/jewelry around the area to be scanned.",
+    features: ["Low Radiation", "Instant Digital Image", "High Clarity", "Bone Fracture Detection"],
+    testDetails: ["Chest PA View", "Knee/Joint X-Ray", "Spine X-Ray", "PNS / Skull"],
+    faqs: [
+      {
+        question: "Is X-Ray safe for pregnancy?",
+        answer: "X-Rays are generally avoided during pregnancy unless absolutely necessary. Please inform the technician."
+      }
+    ]
+  },
+  "ultrasound": {
+    id: "ultrasound",
+    title: "Ultrasound (Sonography)",
+    description: "Safe, non-invasive imaging using sound waves.",
+    price: 1200,
+    originalPrice: 1800,
+    discountedPrice: 1200,
+    reportTime: "Same Day",
+    sampleRequired: "None",
+    homeService: "Not Available",
+    preparation: "Full bladder required for pelvic scans. Fasting required for upper abdomen scans.",
+    features: ["Abdomen & Pelvis", "Pregnancy Scans (TIFFA/Growth)", "Doppler Studies", "High Frequency Probes"],
+    testDetails: ["USG Whole Abdomen", "USG KUB", "Obstetric Scan", "Carotid Doppler"],
+    faqs: [
+      {
+        question: "Is it painful?",
+        answer: "No, ultrasound is completely painless and non-invasive."
+      }
+    ]
+  },
+  "mammography": {
+    id: "mammography",
+    title: "Digital Mammography",
+    description: "Specialized imaging for breast health and cancer screening.",
+    price: 1800,
+    originalPrice: 2500,
+    discountedPrice: 1800,
+    reportTime: "24 Hours",
+    sampleRequired: "None",
+    homeService: "Not Available",
+    preparation: "Do not use deodorant, powder, or lotions on the breast/underarm area on the day of the exam.",
+    features: ["Early Cancer Detection", "Digital Mammography", "Female Technicians", "Privacy Assured"],
+    testDetails: ["Bilateral Mammography", "Screening Mammography", "Diagnostic Mammography"],
+    faqs: [
+      {
+        question: "How often should I get checked?",
+        answer: "Women over 40 are recommended to have an annual mammogram."
+      }
+    ]
+  },
+  "ecg-echo": {
+    id: "ecg-echo",
+    title: "ECG & 2D Echo",
+    description: "Cardiac investigations to monitor heart health.",
+    price: 1500,
+    originalPrice: 2000,
+    discountedPrice: 1500,
+    reportTime: "Same Day",
+    sampleRequired: "None",
+    homeService: "ECG Available at Home",
+    preparation: "No specific preparation required. Wear loose clothing.",
+    features: ["12 Lead ECG", "Color Doppler Echo", "Cardiologist Reviewed", "Heart Function Assessment"],
+    testDetails: ["Resting ECG", "2D Echocardiogram", "Stress Test (TMT)"],
+    faqs: [
+      {
+        question: "What does Echo show?",
+        answer: "It shows the pumping action of the heart and check the valves."
+      }
+    ]
+  }
+};

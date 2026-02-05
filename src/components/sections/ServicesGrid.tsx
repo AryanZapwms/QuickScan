@@ -3,170 +3,94 @@
 import { useState } from "react";
 import Button from "../ui/Button";
 import { ServiceCard } from "../ui/Card";
-import { FiFilter } from "react-icons/fi";
+import { ALL_SERVICES_DATA } from "@/lib/data/services";
+
+type CategoryType = 'pathology' | 'radiology';
 
 const ServicesGrid = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState<CategoryType>('pathology');
 
-  const services = [
-    {
-      id: 1,
-      name: "Premium MRI Scan",
-      originalPrice: 3656,
-      discountedPrice: 2500,
-      features: [
-        "1.5T or 3T MRI",
-        "Expert Radiologist",
-        "Digital Report",
-        "Same Day Report",
-      ],
-      category: "mri",
-      isPopular: true,
-      image: "/images/mri.jpg",
-      href: "/services/mri-scan",
-    },
-    {
-      id: 2,
-      name: "Premium CT Scan",
-      originalPrice: 3656,
-      discountedPrice: 2250,
-      features: [
-        "128 Slice CT",
-        "3D Reconstruction",
-        "Quick Results",
-        "Digital Images",
-      ],
-      category: "ct-scan",
-      isPopular: true,
-      image: "/images/ct-scan.jpg",
-      href: "/services/ct-scan",
-    },
-    {
-      id: 3,
-      name: "Full Body Health Checkup",
-      originalPrice: 4050,
-      discountedPrice: 3500,
-      features: [
-        "80+ Tests",
-        "Vitamin Profile",
-        "Cardiac Risk",
-        "Doctor Consultation",
-      ],
-      category: "health-checkup",
-      isPopular: true,
-      image: "/images/health-checkup.jpg",
-    },
-    {
-      id: 4,
-      name: "Advanced X-Ray",
-      originalPrice: 1200,
-      discountedPrice: 899,
-      features: [
-        "Digital X-Ray",
-        "Quick Report",
-        "Multiple Views",
-        "Expert Analysis",
-      ],
-      category: "x-ray",
-      isPopular: false,
-      image: "/images/xray.jpg",
-    },
-    {
-      id: 5,
-      name: "Comprehensive Blood Test",
-      originalPrice: 2999,
-      discountedPrice: 1999,
-      features: [
-        "CBC & ESR",
-        "Liver Function",
-        "Kidney Function",
-        "Thyroid Profile",
-      ],
-      category: "blood-test",
-      isPopular: false,
-      image: "/images/blood-test.jpg",
-    },
-    {
-      id: 6,
-      name: "Ultrasound Scan",
-      originalPrice: 2200,
-      discountedPrice: 1799,
-      features: [
-        "Abdomen Scan",
-        "Color Doppler",
-        "Expert Sonologist",
-        "Same Day Report",
-      ],
-      category: "ultrasound",
-      isPopular: false,
-      image: "/images/ultrasound.jpg",
-    },
-  ];
-
-  const categories = [
-    { id: "all", name: "All Services" },
-    { id: "mri", name: "MRI Scan" },
-    { id: "ct-scan", name: "CT Scan" },
-    { id: "health-checkup", name: "Health Checkup" },
-    { id: "x-ray", name: "X-Ray" },
-    { id: "blood-test", name: "Blood Tests" },
-  ];
-
-  const filteredServices =
-    selectedCategory === "all"
-      ? services
-      : services.filter((service) => service.category === selectedCategory);
-
-  const handleBook = (serviceId: number) => {
-    // Navigate to booking page with service ID
+  const handleBook = (serviceId: string) => {
     window.location.href = `/booking?service=${serviceId}`;
   };
 
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="container-custom px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Popular Scans & Packages
-            </h2>
-            <p className="text-gray-600">
-              Choose from 150+ tests and health packages at best prices
-            </p>
-          </div>
+    <section className="py-12 md:py-16 bg-gray-50/50">
+      <div className="container-custom px-4 md:px-6">
+        <div className="text-center mb-10 md:mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Services Covered
+          </h2>
+          <p className="text-gray-500 max-w-2xl mx-auto">
+            Comprehensive diagnostic services ranging from advanced imaging to routine pathology tests.
+          </p>
+        </div>
 
-          <div className="flex items-center mt-4 md:mt-0">
-            <FiFilter className="mr-2 text-gray-500" />
-            <div className="flex space-x-2 overflow-x-auto pb-2">
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`px-4 py-2 border border-gray-300 rounded-full whitespace-nowrap transition duration-300 ${
-                    selectedCategory === category.id
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
+        {/* Category Tabs */}
+        <div className="flex justify-center mb-10">
+          <div className="bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 inline-flex gap-1">
+            <button
+              onClick={() => setActiveCategory('pathology')}
+              className={`px-6 py-2.5 rounded-xl border-none text-sm font-semibold transition-all duration-300 ${
+                activeCategory === 'pathology'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              Pathology / Lab Services
+            </button>
+            <button
+              onClick={() => setActiveCategory('radiology')}
+              className={`px-6 py-2.5 rounded-xl border-none text-sm font-semibold transition-all duration-300 ${
+                activeCategory === 'radiology'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              Radiology / Imaging Services
+            </button>
+          </div>
+        </div>
+
+        {/* Content Section */}
+        <div className="animate-fadeIn border p-4 rounded-lg border-gray-300 shadow-md">
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+               <h3 className="text-xl font-bold text-gray-800">
+                {ALL_SERVICES_DATA[activeCategory].title}
+              </h3>
+              <p className="text-sm text-gray-500 mt-1">
+                {ALL_SERVICES_DATA[activeCategory].description}
+              </p>
             </div>
           </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+            {ALL_SERVICES_DATA[activeCategory].items.map((service) => (
+              <ServiceCard
+                key={service.id}
+                service={{
+                  id: service.id,
+                  name: service.name,
+                  originalPrice: service.price || 0,
+                  discountedPrice: service.discountedPrice || 0,
+                  features: service.features || [],
+                  isPopular: service.isPopular,
+                  image: service.image || "/images/health-checkup.jpg", // Fallback image
+                }}
+                onBook={() => handleBook(service.id)}
+              />
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredServices.map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
-              onBook={() => handleBook(service.id)}
-            />
-          ))}
-        </div>
-
-        <div className="text-center mt-12">
-          <Button href="/services" variant="outline" size="lg" className="no-underline ">
+        <div className="text-center mt-10">
+          <Button 
+            href="/services" 
+            variant="outline" 
+            size="lg"
+            className="bg-white hover:bg-gray-50 border-gray-200"
+          >
             View All Services
           </Button>
         </div>

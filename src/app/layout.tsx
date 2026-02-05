@@ -15,6 +15,10 @@ const inter = Inter({ subsets: ["latin"] });
 // Note: Metadata must remain in a server component
 // You'll need to separate metadata or use a different approach
 
+import LeadCaptureModal from "@/components/ui/LeadCaptureModal";
+
+// ... imports
+
 export default function RootLayout({
   children,
 }: {
@@ -37,18 +41,22 @@ export default function RootLayout({
           type="image/png"
         />
       </head>
-      <body className={`${inter.className} bg-gray-50`}>
+      <body className={`${inter.className} flex flex-col  min-h-screen bg-gray-50`}>
         <Providers>
           {/* Only show public Header on non-admin pages */}
           {!isAdminPage && <Header />}
 
-          <main className={`min-h-screen ${!isAdminPage ? "pt-16" : ""}`}>
-            {children}
+          <main className={`flex-1 w-full  ${!isAdminPage ? "pt-24 md:pt-28" : ""}`}>
+            <div className="mx-auto self-center w-full">
+              {children}
+            </div>
           </main>
 
           {/* Only show public Footer on non-admin pages */}
           {!isAdminPage && <Footer />}
 
+          {/* Global Components */}
+          {!isAdminPage && <LeadCaptureModal />}
           <Toaster position="top-right" />
         </Providers>
       </body>

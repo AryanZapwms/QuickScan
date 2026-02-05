@@ -38,13 +38,14 @@ export default function DashboardPage() {
       return;
     }
 
-    // If user is admin, redirect to admin dashboard
-    if (session?.user?.role === "admin") {
-      console.log("Admin detected, redirecting to /admin");
-      router.push("/admin");
-      return;
-    }
-
+   // If user is admin, lab-admin, or super-admin, redirect to admin dashboard
+  const adminRoles = ["admin", "lab-admin", "super-admin"];
+  if (session?.user?.role && adminRoles.includes(session.user.role as string)) {
+    console.log(`${session.user.role} detected, redirecting to /admin`);
+    router.push("/admin");
+    return;
+  }
+  
     // If not admin, proceed with regular dashboard
     if (session && session.user?.role !== "admin") {
       setIsCheckingAdmin(false);

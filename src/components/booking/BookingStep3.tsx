@@ -125,6 +125,25 @@ export default function BookingStep3({
     }
   };
 
+  const handleAppointmentTypeChange = (
+  value: "lab-visit" | "home-service"
+) => {
+  const serviceIdentifier =
+    (data.serviceName || data.serviceType || "").toLowerCase();
+
+  const isRestricted =
+    serviceIdentifier.includes("mri") ||
+    serviceIdentifier.includes("ct");
+
+  if (isRestricted && value === "home-service") {
+    alert("Home service is not available for MRI / CT scans");
+    return; // ❌ block selection
+  }
+
+  updateData({ appointmentType: value });
+};
+
+
   const handleLabSelect = (lab: any) => {
     updateData({
       labId: lab._id,

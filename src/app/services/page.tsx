@@ -89,12 +89,12 @@ export default function ServicesPage() {
 }
 
 const categories = [
-  { id: 1, name: 'MRI Scan', slug: 'mri-scan', icon: '🧠', count: '15+' },
+  { id: 1, name: 'MRI Scan', slug: 'mri', icon: '🧠', count: '15+' },
   { id: 2, name: 'CT Scan', slug: 'ct-scan', icon: '🫀', count: '12+' },
   { id: 3, name: 'X-Ray', slug: 'x-ray', icon: '🦴', count: '25+' },
   { id: 4, name: 'Blood Tests', slug: 'blood-tests', icon: '💉', count: '500+' },
-  { id: 5, name: 'Health Checkup', slug: 'health-checkup', icon: '🏥', count: '30+' },
+  { id: 5, name: 'Health Checkup', slug: 'health-packages', icon: '🏥', count: '30+' },
   { id: 6, name: 'Ultrasound', slug: 'ultrasound', icon: '👶', count: '20+' },
-  { id: 7, name: 'Cardiac Tests', slug: 'cardiac-tests', icon: '❤️', count: '45+' },
-  { id: 8, name: 'Cancer Screening', slug: 'cancer-screening', icon: '🩺', count: '25+' },
+  { id: 7, name: 'Cardiac Tests', slug: 'ecg-echo', icon: '❤️', count: '45+' },
+  { id: 8, name: 'Cancer Screening', slug: 'pet-ct', icon: '🩺', count: '25+' },
 ];

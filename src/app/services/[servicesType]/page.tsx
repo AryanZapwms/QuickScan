@@ -100,6 +100,26 @@ export default async function ServicePage({ params }: ServicePageProps) {
               </ul>
             </div>
 
+            {/* Test Details (if available) */}
+            {service.testDetails && service.testDetails.length > 0 && (
+              <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <h2 className="text-2xl font-bold mb-6">
+                  Available Tests
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {service.testDetails.map((test: string, index: number) => (
+                    <div
+                      key={index}
+                      className="flex items-center p-4 border border-gray-200 rounded-lg"
+                    >
+                      <FiCheck className="text-blue-500 mr-3" />
+                      <span>{test}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Preparation Instructions */}
             <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
               <h2 className="text-2xl font-bold mb-6">
