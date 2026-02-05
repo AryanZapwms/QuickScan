@@ -81,12 +81,12 @@ const LeadCaptureModal = () => {
       <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl relative animate-slideUp">
         
         {/* Close Button */}
-        {/* <button
+        <button
           onClick={handleDismiss}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors bg-gray-100 rounded-full p-1"
         >
           <FiX size={20} />
-        </button> */}
+        </button>
 
         {/* Content */}
         <div className="p-6 md:p-8">
