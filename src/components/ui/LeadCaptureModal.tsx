@@ -77,13 +77,13 @@ const LeadCaptureModal = () => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-      <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl relative animate-slideUp">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
+      <div className="bg-background border border-border rounded-2xl w-full max-w-md overflow-hidden shadow-2xl relative">
         
         {/* Close Button */}
         <button
           onClick={handleDismiss}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors bg-gray-100 rounded-full p-1"
+          className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors bg-secondary rounded-full p-1 border-0"
         >
           <FiX size={20} />
         </button>
@@ -95,32 +95,32 @@ const LeadCaptureModal = () => {
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <FiCheckCircle className="text-green-600 w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">Thank You!</h3>
-              <p className="text-gray-600">
+              <h3 className="text-2xl font-bold text-foreground mb-2">Thank You!</h3>
+              <p className="text-muted-foreground">
                 Your details have been saved. Our health expert will contact you shortly.
               </p>
             </div>
           ) : (
             <>
               <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                <h3 className="text-2xl font-bold text-foreground mb-2">
                   Get a Free Health Consultation
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-muted-foreground text-sm">
                   Join 250,000+ happy patients. Fill your details to get exclusive offers and proper guidance.
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700 ml-1">Full Name</label>
+                  <label className="text-sm font-medium text-foreground ml-1">Full Name</label>
                   <div className="relative">
-                    <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
                     <input
                       type="text"
                       required
                       placeholder="John Doe"
-                      className="w-80 pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent outline-none transition-all bg-background text-foreground"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     />
@@ -128,14 +128,14 @@ const LeadCaptureModal = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700 ml-1">Email Address</label>
+                  <label className="text-sm font-medium text-foreground ml-1">Email Address</label>
                   <div className="relative">
-                    <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
                     <input
                       type="email"
                       required
                       placeholder="john@example.com"
-                      className="w-80 pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent outline-none transition-all bg-background text-foreground"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
@@ -143,14 +143,14 @@ const LeadCaptureModal = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700 ml-1">Phone Number</label>
+                  <label className="text-sm font-medium text-foreground ml-1">Phone Number</label>
                   <div className="relative">
-                    <FiPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <FiPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
                     <input
                       type="tel"
                       required
                       placeholder="+91 98765 43210"
-                      className="w-80 pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent outline-none transition-all bg-background text-foreground"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     />
@@ -160,13 +160,13 @@ const LeadCaptureModal = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-blue-600 border-none hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-lg shadow-blue-200 disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-6 rounded-xl transition duration-300 disabled:opacity-70 disabled:cursor-not-allowed mt-2 border-0"
                 >
                   {loading ? "Submitting..." : "Get Free Consultation"}
                 </button>
               </form>
               
-              <p className="text-xs text-center text-gray-400 mt-4">
+              <p className="text-xs text-center text-muted-foreground mt-4">
                 Your data is safe with us. We don&apos;t spam.
               </p>
             </>

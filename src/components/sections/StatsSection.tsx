@@ -36,25 +36,25 @@ const StatsSection = () => {
   ];
 
   return (
-    <section className="py-6 md:py-8 border-b border-gray-100 bg-white">
+    <section className="py-6 md:py-8 border-b border-border bg-background">
       <div className="container-custom px-4 md:px-6">
-        <h2 className="text-lg md:text-xl font-bold text-center mb-6 text-gray-800">
+        <h2 className="text-lg md:text-xl font-bold text-center mb-6 text-foreground">
           Why Choose QuickScan?
         </h2>
         
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
           {stats.map((stat, index) => (
             <div 
               key={index} 
-              className="text-center p-3 rounded-lg hover:bg-gray-50 transition duration-200"
+              className="text-center p-4 rounded-xl border border-transparent hover:border-border hover:bg-secondary/30 transition-all duration-300"
             >
-              <div className="text-blue-600 mb-2 flex justify-center">
+              <div className="text-primary mb-3 flex justify-center">
                 {stat.icon}
               </div>
-              <div className="text-base md:text-lg font-bold text-gray-900 leading-none mb-1">
+              <div className="text-xl md:text-2xl font-bold text-foreground leading-none mb-2">
                 {stat.value}
               </div>
-              <div className="font-medium text-gray-700 text-xs mb-0.5">
+              <div className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
                 {stat.label}
               </div>
             </div>

@@ -194,8 +194,8 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <FiLoader className="animate-spin text-4xl text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Redirecting to admin dashboard...</p>
+          <FiLoader className="animate-spin text-4xl text-primary mx-auto mb-4" />
+          <p className="text-muted-foreground">Redirecting to admin dashboard...</p>
         </div>
       </div>
     );
@@ -217,7 +217,7 @@ export default function DashboardPage() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
               <div className="flex items-center mb-6">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mr-4">
                   {session.user?.image ? (
                     <img
                       src={session.user.image}
@@ -225,13 +225,13 @@ export default function DashboardPage() {
                       className="w-16 h-16 rounded-full"
                     />
                   ) : (
-                    <FiUser className="text-blue-600 text-2xl" />
+                    <FiUser className="text-primary text-2xl" />
                   )}
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">{session.user?.name}</h3>
-                  <p className="text-gray-600 text-sm">{session.user?.email}</p>
-                  <p className="text-xs text-blue-600 bg-blue-50 px-2 py-1 text-center rounded-full mt-1">
+                  <p className="text-muted-foreground text-sm">{session.user?.email}</p>
+                  <p className="text-xs text-primary bg-secondary px-2 py-1 text-center rounded-full mt-1 font-medium">
                     {session.user?.role === "admin"
                       ? "Administrator"
                       : "Member"}
@@ -244,8 +244,8 @@ export default function DashboardPage() {
                   onClick={() => setActiveTab("overview")}
                   className={`w-full text-left flex items-center p-3 border-0 rounded-lg transition duration-300 ${
                     activeTab === "overview"
-                      ? "bg-blue-100 text-blue-600"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-secondary"
                   }`}
                 >
                   <FiCalendar className="mr-3" />
@@ -259,8 +259,8 @@ export default function DashboardPage() {
                   }}
                   className={`w-full text-left flex items-center p-3 border-0 rounded-lg transition duration-300 ${
                     activeTab === "appointments"
-                      ? "bg-blue-100 text-blue-600"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-secondary"
                   }`}
                 >
                   <FiClock className="mr-3" />
@@ -279,8 +279,8 @@ export default function DashboardPage() {
                   onClick={() => setActiveTab("reports")}
                   className={`w-full text-left flex items-center p-3 border-0 rounded-lg transition duration-300 ${
                     activeTab === "reports"
-                      ? "bg-blue-100 text-blue-600"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-secondary"
                   }`}
                 >
                   <FiFileText className="mr-3" />
@@ -291,8 +291,8 @@ export default function DashboardPage() {
                   onClick={() => setActiveTab("billing")}
                   className={`w-full text-left flex items-center border-0 p-3 rounded-lg transition duration-300 ${
                     activeTab === "billing"
-                      ? "bg-blue-100 text-blue-600"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-secondary"
                   }`}
                 >
                   <FiDollarSign className="mr-3" />
@@ -310,7 +310,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl p-6">
+            <div className="bg-primary text-primary-foreground rounded-xl p-6">
               <h3 className="font-bold text-lg mb-4">Quick Stats</h3>
               <div className="space-y-4">
                 <div>
@@ -342,13 +342,13 @@ export default function DashboardPage() {
             {activeTab === "overview" && (
               <div>
                 {/* Welcome Banner */}
-                <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-8 mb-8">
+                <div className="bg-secondary/30 border border-border rounded-xl p-8 mb-8">
                   <div className="flex justify-between items-center">
                     <div>
                       <h2 className="text-2xl font-bold mb-2">
                         Welcome back, {session.user?.name}!
                       </h2>
-                      <p className="text-gray-600">
+                      <p className="text-muted-foreground">
                         You have{" "}
                         {
                           bookings.filter(
@@ -361,7 +361,7 @@ export default function DashboardPage() {
                     </div>
                     <Button
                       href="/booking"
-                      variant="primary"
+                      variant="default"
                       className="no-underline"
                     >
                       Book New Test
@@ -394,7 +394,7 @@ export default function DashboardPage() {
                     <h3 className="text-xl font-bold">Upcoming Appointments</h3>
                     <button
                       onClick={fetchBookings}
-                      className="text-blue-600 py-2 px-4 rounded-2xl border-blue-200 bg-blue-50 text-blue-700 hover:text-blue-700 font-semibold flex items-center"
+                      className="text-primary py-2 px-4 rounded-xl border border-border bg-secondary/50 hover:bg-secondary font-semibold flex items-center transition-colors"
                     >
                       <FiRefreshCw className="mr-2" />
                       Refresh
@@ -454,7 +454,7 @@ export default function DashboardPage() {
                                     onClick={() =>
                                       handleReschedule(booking.bookingId)
                                     }
-                                    className="px-4 py-2 bg-blue-100 border-0 text-blue-700 hover:bg-blue-200 rounded-lg text-sm transition"
+                                    className="px-4 py-2 bg-secondary border border-border text-primary hover:bg-accent rounded-lg text-sm transition font-medium"
                                   >
                                     Reschedule
                                   </button>
@@ -495,7 +495,7 @@ export default function DashboardPage() {
                       </p>
                       <Button
                         href="/booking"
-                        variant="primary"
+                        variant="default"
                         className="no-underline"
                       >
                         Book Your First Test
@@ -537,7 +537,7 @@ export default function DashboardPage() {
                               <div className="space-x-2">
                                 <button
                                   onClick={() => downloadReceipt(booking)}
-                                  className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg text-sm"
+                                  className="px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg text-sm transition-colors"
                                 >
                                   Download Report
                                 </button>
@@ -571,7 +571,7 @@ export default function DashboardPage() {
                       <FiRefreshCw className="mr-2" />
                       Refresh
                     </button>
-                    <Button href="/booking" variant="primary">
+                    <Button href="/booking" variant="default">
                       Book New
                     </Button>
                   </div>
@@ -682,7 +682,7 @@ export default function DashboardPage() {
                   <div className="text-center py-12">
                     <FiCalendar className="text-6xl text-gray-300 mx-auto mb-4" />
                     <p className="text-gray-600 mb-4">No appointments found</p>
-                    <Button href="/booking" variant="primary">
+                    <Button href="/booking" variant="default">
                       Book Your First Test
                     </Button>
                   </div>

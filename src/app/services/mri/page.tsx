@@ -15,7 +15,7 @@ export default function MRIScanPage() {
   return (
     <div className="pt-20 mt-15 pb-20">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 py-12">
+      <div className="bg-secondary/30 border-y border-border py-12">
         <div className="container-custom px-4">
           <div className="max-w-4xl">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -23,7 +23,7 @@ export default function MRIScanPage() {
             </h1>
             <p className="text-xl text-gray-600 mb-8">{service.description}</p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
-              <div className="text-3xl font-bold text-blue-600">
+              <div className="text-3xl font-bold text-primary">
                 ₹{service.price}
                 <span className="text-lg text-gray-500 line-through ml-2">
                   ₹{service.originalPrice}
@@ -53,8 +53,8 @@ export default function MRIScanPage() {
               </p>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                <div className="text-center p-4 border border-gray-200 rounded-lg">
-                  <FiClock className="text-blue-600 text-2xl mx-auto mb-2" />
+                <div className="text-center p-4 border border-border rounded-lg">
+                  <FiClock className="text-primary text-2xl mx-auto mb-2" />
                   <div className="font-bold">Report Time</div>
                   <div className="text-sm text-gray-600">
                     {service.reportTime}
@@ -101,9 +101,9 @@ export default function MRIScanPage() {
                 {service.testDetails.map((test: string, index: number) => (
                   <div
                     key={index}
-                    className="flex items-center p-4 border border-gray-200 rounded-lg"
+                    className="flex items-center p-4 border border-border rounded-lg"
                   >
-                    <FiStar className="text-blue-500 mr-3" />
+                    <FiStar className="text-primary mr-3" />
                     <span>{test}</span>
                   </div>
                 ))}
@@ -164,7 +164,7 @@ export default function MRIScanPage() {
 
               <div className="mb-6">
                 <div className="flex items-baseline mb-2">
-                  <span className="text-3xl font-bold text-blue-600">
+                  <span className="text-3xl font-bold text-primary">
                     ₹{service.price}
                   </span>
                   <span className="text-gray-500 line-through ml-2">
@@ -181,7 +181,7 @@ export default function MRIScanPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Select City
                   </label>
-                  <select className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <select className="w-full border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20">
                     <option>Mumbai</option>
                     <option>Delhi</option>
                     <option>Bangalore</option>
@@ -195,7 +195,7 @@ export default function MRIScanPage() {
                     Service Type
                   </label>
                   <div className="space-y-2">
-                    <label className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-blue-50">
+                    <label className="flex items-center p-3 border border-border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
                       <input
                         type="radio"
                         name="serviceType"
@@ -215,10 +215,9 @@ export default function MRIScanPage() {
 
               <Button
                 href={`/booking?service=mri-scan`}
-                variant="primary"
+                variant="default"
                 size="lg"
-                fullWidth
-                 className='no-underline'
+                className="w-full no-underline"
               >
                 Proceed to Book
               </Button>
@@ -254,7 +253,7 @@ export default function MRIScanPage() {
                   "Insurance & Corporate Tie-ups",
                 ].map((item, index) => (
                   <div key={index} className="flex items-start">
-                    <FiStar className="text-blue-500 mt-1 mr-2 flex-shrink-0" />
+                    <FiStar className="text-primary mt-1 mr-2 flex-shrink-0" />
                     <span className="text-sm">{item}</span>
                   </div>
                 ))}

@@ -43,7 +43,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8">
+    <div className="max-w-md mx-auto border-1 rounded-xl shadow-lg p-8">
       <h2 className="text-2xl font-bold text-center mb-6">
         Login to QuickScan
       </h2>
@@ -66,7 +66,7 @@ export default function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="Enter your email"
           />
         </div>
@@ -81,20 +81,20 @@ export default function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="Enter your password"
           />
           <div className="text-right mt-2">
             <Link
               href="/forgot-password"
-              className="text-sm text-blue-600 hover:text-blue-700"
+              className="text-sm text-primary hover:text-primary/80"
             >
               Forgot Password?
             </Link>
           </div>
         </div>
 
-        <Button type="submit" variant="primary" fullWidth disabled={loading}>
+        <Button type="submit" variant="default" className="w-full" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </Button>
       </form>
@@ -104,7 +104,7 @@ export default function LoginForm() {
           Don't have an account?{" "}
           <Link
             href="/register"
-            className="text-blue-600 hover:text-blue-700 font-semibold"
+            className="text-primary hover:text-primary/80 font-semibold"
           >
             Sign up
           </Link>

@@ -25,7 +25,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
   return (
     <div className="pt-8 pb-20">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 py-12">
+      <div className="bg-secondary/30 border-y border-border py-12">
         <div className="container-custom px-4">
           <div className="max-w-4xl">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -33,7 +33,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             </h1>
             <p className="text-xl text-gray-600 mb-8">{service.description}</p>
             <div className="flex items-center space-x-6">
-              <div className="text-3xl font-bold text-blue-600">
+              <div className="text-3xl font-bold text-primary">
                 ₹{service.price}
                 {service.originalPrice > service.price && (
                   <span className="text-lg text-gray-500 line-through ml-2">
@@ -59,29 +59,29 @@ export default async function ServicePage({ params }: ServicePageProps) {
               <p className="text-gray-700 mb-6">{service.description}</p>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                <div className="text-center p-4 border border-gray-200 rounded-lg">
-                  <FiClock className="text-blue-600 text-2xl mx-auto mb-2" />
+                <div className="text-center p-4 border border-border rounded-lg">
+                  <FiClock className="text-primary text-2xl mx-auto mb-2" />
                   <div className="font-bold">Report Time</div>
                   <div className="text-sm text-gray-600">
                     {service.reportTime}
                   </div>
                 </div>
-                <div className="text-center p-4 border border-gray-200 rounded-lg">
-                  <FiFileText className="text-green-600 text-2xl mx-auto mb-2" />
+                <div className="text-center p-4 border border-border rounded-lg">
+                  <FiFileText className="text-primary text-2xl mx-auto mb-2" />
                   <div className="font-bold">Sample Required</div>
                   <div className="text-sm text-gray-600">
                     {service.sampleRequired}
                   </div>
                 </div>
-                <div className="text-center p-4 border border-gray-200 rounded-lg">
-                  <FiHome className="text-purple-600 text-2xl mx-auto mb-2" />
+                <div className="text-center p-4 border border-border rounded-lg">
+                  <FiHome className="text-primary text-2xl mx-auto mb-2" />
                   <div className="font-bold">Home Service</div>
                   <div className="text-sm text-gray-600">
                     {service.homeService}
                   </div>
                 </div>
-                <div className="text-center p-4 border border-gray-200 rounded-lg">
-                  <FiShield className="text-red-600 text-2xl mx-auto mb-2" />
+                <div className="text-center p-4 border border-border rounded-lg">
+                  <FiShield className="text-primary text-2xl mx-auto mb-2" />
                   <div className="font-bold">Fasting</div>
                   <div className="text-sm text-gray-600">
                     {service.preparation.toLowerCase().includes('fasting') ? 'Required' : 'Not Required'}
@@ -112,7 +112,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                       key={index}
                       className="flex items-center p-4 border border-gray-200 rounded-lg"
                     >
-                      <FiCheck className="text-blue-500 mr-3" />
+                      <FiCheck className="text-primary mr-3" />
                       <span>{test}</span>
                     </div>
                   ))}
@@ -155,7 +155,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
               <div className="mb-6">
                 <div className="flex items-baseline mb-2">
-                  <span className="text-3xl font-bold text-blue-600">
+                  <span className="text-3xl font-bold text-primary">
                     ₹{service.price}
                   </span>
                   {service.originalPrice > service.price && (
@@ -176,7 +176,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Select City
                   </label>
-                  <select className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <select className="w-full border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20">
                     <option>Mumbai</option>
                     <option>Delhi</option>
                     <option>Bangalore</option>
@@ -212,10 +212,9 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
               <Button
                 href={`/booking?service=${servicesType}`}
-                variant="primary"
+                variant="default"
                 size="lg"
-                fullWidth
-                className="no-underline"
+                className="w-full no-underline"
               >
                 Proceed to Book
               </Button>
@@ -240,15 +239,15 @@ export default async function ServicePage({ params }: ServicePageProps) {
                   <a
                     key={test.id}
                     href={`/services/${test.slug}`}
-                    className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-blue-50 transition duration-300"
+                    className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-secondary transition duration-300"
                   >
                     <div>
                       <div className="font-medium">{test.name}</div>
-                      <div className="text-sm text-gray-600">
+                      <div className="text-sm text-muted-foreground">
                         From ₹{test.price}
                       </div>
                     </div>
-                    <div className="text-blue-600">→</div>
+                    <div className="text-primary">→</div>
                   </a>
                 ))}
               </div>

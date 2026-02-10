@@ -1,5 +1,4 @@
-// components/booking/BookingStep5.tsx
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
 import Button from "../ui/Button";
@@ -10,11 +9,9 @@ import {
   FiCalendar,
   FiMapPin,
   FiUser,
-  FiFileText,
   FiHome,
   FiPackage,
   FiShield,
-  FiClock,
   FiAlertCircle,
 } from "react-icons/fi";
 
@@ -29,7 +26,7 @@ export default function BookingStep5({
   data,
   updateData,
   prevStep,
-  onSubmit,
+  onSubmit, // We might not use this if we handle submission internally
 }: Step5Props) {
   const [coupon, setCoupon] = useState(data.couponCode || "");
   const [applyingCoupon, setApplyingCoupon] = useState(false);
@@ -169,34 +166,33 @@ export default function BookingStep5({
 
     try {
       // Test with simple data first
-      const testData = {
-        serviceId: "mri-scan",
-        patientName: data.patientName || "Test Patient",
-        patientEmail: data.patientEmail || "test@example.com",
-        patientPhone: data.patientPhone || "1234567890",
-        appointmentDate: data.appointmentDate || new Date(),
-        timeSlot: data.timeSlot || "10:00-11:00",
-        labId: data.labId || "6958b1c7f2b16294edc2f2ae", // Use your lab ID
-        appointmentType: data.appointmentType || "lab-visit",
-        paymentMethod: "cash", // Use cash for testing
+      // In a real app, you would construct the payload carefully
+      const payload = {
+        serviceId: data.serviceId || "mri-scan",
+        patientName: data.patientName,
+        patientEmail: data.patientEmail,
+        patientPhone: data.patientPhone,
+        appointmentDate: data.appointmentDate,
+        timeSlot: data.timeSlot,
+        labId: data.labId,
+        appointmentType: data.appointmentType,
+        paymentMethod: data.paymentMethod,
+        // Add other fields as needed by your API
       };
 
-      console.log("🚀 Sending to API:", testData);
+      console.log("🚀 Sending to API:", payload);
 
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(testData),
+        body: JSON.stringify(payload),
       });
-
-      console.log("📡 Response status:", response.status);
-      console.log("📡 Response headers:", response.headers);
 
       const result = await response.json();
       console.log("✅ API Response:", result);
 
       if (result.success) {
-        alert(`Booking successful! ID: ${result.bookingId}`);
+        // alert(`Booking successful! ID: ${result.bookingId}`);
         window.location.href = `/booking/success?bookingId=${result.bookingId}`;
       } else {
         alert(`Booking failed: ${result.message}`);
@@ -207,219 +203,49 @@ export default function BookingStep5({
     }
   };
 
-  const handleOnlinePayment = async () => {
-    try {
-      console.log("Creating booking for online payment...");
-
-      // First create the booking
-      const bookingResponse = await fetch("/api/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...data,
-          paymentMethod: "online",
-          paymentStatus: "pending",
-        }),
-      });
-
-      const bookingResult = await bookingResponse.json();
-      console.log("Booking creation result:", bookingResult);
-
-      if (bookingResult.success) {
-        // If payment integration is ready, handle payment
-        if (bookingResult.data?.paymentLink) {
-          // Redirect to payment page
-          window.location.href = bookingResult.data.paymentLink;
-        } else {
-          // For now, just go to success page
-          window.location.href = `/booking/success?bookingId=${bookingResult.bookingId}`;
-        }
-      } else {
-        alert(`Booking failed: ${bookingResult.message}`);
-      }
-    } catch (error) {
-      console.error("Payment initiation error:", error);
-      alert("Failed to process payment. Please try again.");
-    }
-  };
-
-  const initiatePayment = async () => {
-    try {
-      console.log("Creating booking...");
-
-      // First, create the booking
-      const bookingResponse = await fetch("/api/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...data,
-          paymentMethod: "online",
-          paymentStatus: "pending",
-        }),
-      });
-
-      const bookingResult = await bookingResponse.json();
-      console.log("Booking creation result:", bookingResult);
-
-      if (bookingResult.success) {
-        console.log("Creating payment...");
-
-        // Create payment order
-        const paymentResponse = await fetch("/api/payment/create", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            bookingId: bookingResult.bookingId,
-          }),
-        });
-
-        const paymentResult = await paymentResponse.json();
-        console.log("Payment creation result:", paymentResult);
-
-        if (paymentResult.success) {
-          // Handle simulated vs real payment
-          if (paymentResult.simulated) {
-            // For simulated payments, redirect directly to success
-            console.log("Using simulated payment, redirecting to success...");
-            window.location.href = `/booking/success?bookingId=${bookingResult.bookingId}`;
-          } else {
-            // For real payments, load Razorpay
-            loadRazorpayScript(paymentResult, bookingResult.bookingId);
-          }
-        } else {
-          alert(`Payment setup failed: ${paymentResult.message}`);
-        }
-      } else {
-        alert(`Booking failed: ${bookingResult.message}`);
-      }
-    } catch (error) {
-      console.error("Payment initiation error:", error);
-      alert("Failed to initiate payment. Please try again.");
-    }
-  };
-
-  const loadRazorpayScript = (paymentData: any, bookingId: string) => {
-    // If simulated, skip Razorpay loading
-    if (paymentData.simulated) {
-      console.log("Skipping Razorpay for simulation");
-      window.location.href = `/booking/success?bookingId=${bookingId}`;
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.onload = () => {
-      const options = {
-        key: paymentData.key,
-        amount: paymentData.amount * 100,
-        currency: paymentData.currency || "INR",
-        name: "QuickScan Medical",
-        description: `Booking for ${data.serviceName}`,
-        image: "/logo.png",
-        order_id: paymentData.orderId,
-        handler: function (response: any) {
-          console.log("Payment successful:", response);
-          // Verify payment on server and then redirect
-          verifyPayment(response, bookingId);
-        },
-        prefill: {
-          name: data.patientName,
-          email: data.patientEmail,
-          contact: data.patientPhone,
-        },
-        notes: {
-          bookingId: bookingId,
-          service: data.serviceName,
-        },
-        theme: {
-          color: "#2563eb",
-        },
-      };
-
-      // @ts-ignore
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    };
-
-    script.onerror = () => {
-      console.error("Failed to load Razorpay script");
-      alert(
-        "Payment system unavailable. Please try again or use cash payment."
-      );
-    };
-
-    document.body.appendChild(script);
-  };
-
-  const verifyPayment = async (response: any, bookingId: string) => {
-    try {
-      const verifyResponse = await fetch("/api/payment/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_signature: response.razorpay_signature,
-          bookingId,
-        }),
-      });
-
-      const result = await verifyResponse.json();
-
-      if (result.success) {
-        window.location.href = `/booking/success?bookingId=${bookingId}`;
-      } else {
-        alert("Payment verification failed. Please contact support.");
-      }
-    } catch (error) {
-      console.error("Payment verification error:", error);
-      alert("Payment verification failed. Please contact support.");
-    }
-  };
-
   return (
     <div className="space-y-8">
-      <h2 className="text-2xl font-bold">Review & Confirm Booking</h2>
+      <h2 className="text-2xl font-bold text-foreground">Review & Confirm Booking</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column - Booking Details */}
         <div className="lg:col-span-2 space-y-6">
           {/* Booking Summary Card */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-6 flex items-center">
-              <FiPackage className="mr-3 text-blue-600" />
+          <div className="bg-background border border-border rounded-xl p-6">
+            <h3 className="text-lg font-semibold mb-6 flex items-center text-foreground">
+              <FiPackage className="mr-3 text-primary" />
               Booking Summary
             </h3>
 
             <div className="space-y-6">
               {/* Service Details */}
-              <div className="flex items-start justify-between pb-4 border-b">
+              <div className="flex items-start justify-between pb-4 border-b border-border">
                 <div>
-                  <h4 className="font-medium text-gray-700">Service</h4>
-                  <p className="text-lg font-semibold">
+                  <h4 className="font-medium text-foreground">Service</h4>
+                  <p className="text-lg font-semibold text-foreground">
                     {data.serviceName || "MRI Scan"}
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     {data.appointmentType === "home-service"
                       ? "Home Service"
                       : "Lab Visit"}
                   </p>
                 </div>
                 <div className="text-right">
-                  <div className="text-lg font-bold text-blue-600">
+                  <div className="text-lg font-bold text-primary">
                     ₹{calculations.baseAmount}
                   </div>
-                  <div className="text-sm text-gray-500">Base amount</div>
+                  <div className="text-sm text-muted-foreground">Base amount</div>
                 </div>
               </div>
 
               {/* Appointment Details */}
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <FiCalendar className="mt-1 mr-3 text-gray-400" />
+                  <FiCalendar className="mt-1 mr-3 text-muted-foreground" />
                   <div className="flex-1">
-                    <div className="font-medium">Date & Time</div>
-                    <div className="text-gray-700">
+                    <div className="font-medium text-foreground">Date & Time</div>
+                    <div className="text-muted-foreground">
                       {formatDate(data.appointmentDate)} •{" "}
                       {formatTimeSlot(data.timeSlot)}
                     </div>
@@ -427,13 +253,13 @@ export default function BookingStep5({
                 </div>
 
                 <div className="flex items-start">
-                  <FiMapPin className="mt-1 mr-3 text-gray-400" />
+                  <FiMapPin className="mt-1 mr-3 text-muted-foreground" />
                   <div className="flex-1">
-                    <div className="font-medium">Location</div>
-                    <div className="text-gray-700">
+                    <div className="font-medium text-foreground">Location</div>
+                    <div className="text-muted-foreground">
                       {data.labName || "Lab not selected"}
                       {data.labAddress && (
-                        <div className="text-sm text-gray-600 mt-1">
+                        <div className="text-sm text-muted-foreground mt-1">
                           {data.labAddress}
                         </div>
                       )}
@@ -442,18 +268,18 @@ export default function BookingStep5({
                 </div>
 
                 <div className="flex items-start">
-                  <FiUser className="mt-1 mr-3 text-gray-400" />
+                  <FiUser className="mt-1 mr-3 text-muted-foreground" />
                   <div className="flex-1">
-                    <div className="font-medium">Patient Details</div>
-                    <div className="text-gray-700">
+                    <div className="font-medium text-foreground">Patient Details</div>
+                    <div className="text-muted-foreground">
                       {data.patientName || "Not provided"}
                       {data.patientAge && data.patientGender && (
-                        <span className="text-sm text-gray-600 ml-2">
+                        <span className="text-sm text-muted-foreground ml-2">
                           ({data.patientAge} yrs, {data.patientGender})
                         </span>
                       )}
                     </div>
-                    <div className="text-sm text-gray-600 mt-1">
+                    <div className="text-sm text-muted-foreground mt-1">
                       {data.patientPhone} • {data.patientEmail}
                     </div>
                   </div>
@@ -468,11 +294,11 @@ export default function BookingStep5({
                         <div className="font-medium text-green-700">
                           Home Service Address
                         </div>
-                        <div className="text-gray-700">
+                        <div className="text-muted-foreground">
                           {data.homeServiceAddress}
                         </div>
                         {data.homeServicePincode && (
-                          <div className="text-sm text-gray-600">
+                          <div className="text-sm text-muted-foreground">
                             Pincode: {data.homeServicePincode}
                           </div>
                         )}
@@ -484,9 +310,9 @@ export default function BookingStep5({
           </div>
 
           {/* Payment Method */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-6 flex items-center">
-              <FiCreditCard className="mr-3 text-blue-600" />
+          <div className="bg-background border border-border rounded-xl p-6">
+            <h3 className="text-lg font-semibold mb-6 flex items-center text-foreground">
+              <FiCreditCard className="mr-3 text-primary" />
               Select Payment Method
             </h3>
 
@@ -525,8 +351,8 @@ export default function BookingStep5({
                   key={method.id}
                   className={`border-2 rounded-xl p-5 cursor-pointer transition-all duration-300 ${
                     paymentMethod === method.id
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-200 hover:border-blue-300"
+                      ? "border-primary bg-secondary/50"
+                      : "border-border hover:border-primary/50"
                   }`}
                   onClick={() => {
                     setPaymentMethod(method.id);
@@ -536,15 +362,15 @@ export default function BookingStep5({
                   <div className="flex items-start">
                     <div className="text-2xl mr-4">{method.icon}</div>
                     <div className="flex-1">
-                      <div className="font-semibold">{method.title}</div>
-                      <div className="text-sm text-gray-600 mb-3">
+                      <div className="font-semibold text-foreground">{method.title}</div>
+                      <div className="text-sm text-muted-foreground mb-3">
                         {method.description}
                       </div>
                       <ul className="space-y-1">
                         {method.features.map((feature, idx) => (
                           <li
                             key={idx}
-                            className="flex items-center text-xs text-gray-600"
+                            className="flex items-center text-xs text-muted-foreground"
                           >
                             <FiCheck
                               className="mr-1 text-green-500"
@@ -556,7 +382,7 @@ export default function BookingStep5({
                       </ul>
                     </div>
                     {paymentMethod === method.id && (
-                      <FiCheck className="text-blue-600 text-xl" />
+                      <FiCheck className="text-primary text-xl" />
                     )}
                   </div>
                 </div>
@@ -568,22 +394,22 @@ export default function BookingStep5({
         {/* Right Column - Price & Actions */}
         <div className="space-y-6">
           {/* Price Summary */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-6 flex items-center">
-              <FiDollarSign className="mr-3 text-blue-600" />
+          <div className="bg-background border border-border rounded-xl p-6">
+            <h3 className="text-lg font-semibold mb-6 flex items-center text-foreground">
+              <FiDollarSign className="mr-3 text-primary" />
               Price Summary
             </h3>
 
             <div className="space-y-4 mb-6">
               <div className="flex justify-between">
-                <span className="text-gray-600">Service Fee</span>
-                <span className="font-medium">₹{calculations.baseAmount}</span>
+                <span className="text-muted-foreground">Service Fee</span>
+                <span className="font-medium text-foreground">₹{calculations.baseAmount}</span>
               </div>
 
               {calculations.homeServiceCharge > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Home Service Charge</span>
-                  <span className="font-medium">
+                  <span className="text-muted-foreground">Home Service Charge</span>
+                  <span className="font-medium text-foreground">
                     ₹{calculations.homeServiceCharge}
                   </span>
                 </div>
@@ -597,16 +423,16 @@ export default function BookingStep5({
               )}
 
               <div className="flex justify-between">
-                <span className="text-gray-600">GST (18%)</span>
-                <span className="font-medium">
+                <span className="text-muted-foreground">GST (18%)</span>
+                <span className="font-medium text-foreground">
                   ₹{calculations.taxAmount.toFixed(2)}
                 </span>
               </div>
 
-              <div className="pt-4 border-t">
+              <div className="pt-4 border-t border-border">
                 <div className="flex justify-between text-lg font-bold">
-                  <span>Total Amount</span>
-                  <span className="text-blue-600">
+                  <span className="text-foreground">Total Amount</span>
+                  <span className="text-primary">
                     ₹{calculations.totalAmount.toFixed(2)}
                   </span>
                 </div>
@@ -615,7 +441,7 @@ export default function BookingStep5({
 
             {/* Coupon Code */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-foreground mb-3">
                 Have a coupon code?
               </label>
               <div className="flex gap-2">
@@ -626,7 +452,7 @@ export default function BookingStep5({
                     setCoupon(e.target.value.toUpperCase());
                     if (couponMessage) setCouponMessage(null);
                   }}
-                  className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 border border-input rounded-lg px-4 py-2 bg-background focus:outline-none focus:ring-2 focus:ring-ring"
                   placeholder="Enter code"
                 />
                 <Button
@@ -659,15 +485,15 @@ export default function BookingStep5({
                   id="terms"
                   checked={termsAccepted}
                   onChange={(e) => setTermsAccepted(e.target.checked)}
-                  className="mt-1 mr-3"
+                  className="mt-1 mr-3 text-primary border-input focus:ring-primary rounded"
                 />
-                <label htmlFor="terms" className="text-sm text-gray-700">
+                <label htmlFor="terms" className="text-sm text-muted-foreground">
                   I agree to the{" "}
-                  <a href="/terms" className="text-blue-600 hover:underline">
+                  <a href="/terms" className="text-primary hover:underline">
                     Terms & Conditions
                   </a>{" "}
                   and{" "}
-                  <a href="/privacy" className="text-blue-600 hover:underline">
+                  <a href="/privacy" className="text-primary hover:underline">
                     Privacy Policy
                   </a>
                   . I understand that cancellations may be subject to charges.
@@ -676,7 +502,7 @@ export default function BookingStep5({
             </div>
 
             {/* Security Badge */}
-            <div className="flex items-center text-sm text-gray-600 mb-6">
+            <div className="flex items-center text-sm text-muted-foreground mb-6">
               <FiShield className="mr-2 text-green-500" />
               <span>Secure payment • 256-bit SSL encrypted</span>
             </div>
@@ -686,7 +512,7 @@ export default function BookingStep5({
               <Button
                 onClick={handlePaymentSubmit}
                 disabled={!termsAccepted}
-                variant="primary"
+                variant="default" // Changed from primary to default
                 className="w-full py-3 text-lg font-semibold"
               >
                 {paymentMethod === "online" ? (
@@ -703,14 +529,14 @@ export default function BookingStep5({
           </div>
 
           {/* Support Card */}
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+          <div className="bg-secondary/30 border border-border rounded-xl p-5">
             <div className="flex items-start">
-              <FiAlertCircle className="text-blue-600 mt-1 mr-3 flex-shrink-0" />
+              <FiAlertCircle className="text-primary mt-1 mr-3 flex-shrink-0" />
               <div>
-                <div className="font-semibold text-blue-800 mb-2">
+                <div className="font-semibold text-foreground mb-2">
                   Need Help?
                 </div>
-                <div className="text-sm text-blue-700 space-y-2">
+                <div className="text-sm text-muted-foreground space-y-2">
                   <div>📞 Call: 1800-123-4567</div>
                   <div>💬 Chat with us (24×7)</div>
                   <div>✉️ Email: support@quickscan.com</div>

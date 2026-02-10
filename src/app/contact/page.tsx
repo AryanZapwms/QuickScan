@@ -90,7 +90,7 @@ export default function ContactPage() {
   return (
     <div className="pt-35 pb-20">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 py-16">
+      <div className="bg-secondary/30 border-y border-border py-16">
         <div className="container-custom px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Get in Touch
@@ -109,7 +109,7 @@ export default function ContactPage() {
             <div className="space-y-8">
               {contactMethods.map((method, index) => (
                 <div key={index} className="bg-white rounded-xl shadow-lg p-8">
-                  <div className="text-blue-600 text-3xl mb-4">
+                  <div className="text-primary text-3xl mb-4">
                     {method.icon}
                   </div>
                   <h3 className="text-xl font-bold mb-3">{method.title}</h3>
@@ -161,7 +161,7 @@ export default function ContactPage() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -176,7 +176,7 @@ export default function ContactPage() {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Enter your email"
                     />
                   </div>
@@ -190,7 +190,7 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -204,7 +204,7 @@ export default function ContactPage() {
                       value={formData.subject}
                       onChange={handleChange}
                       required
-                      className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
                     >
                       <option value="">Select a subject</option>
                       {subjects.map((subject) => (
@@ -226,14 +226,14 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
                     placeholder="Please describe your query in detail..."
                   />
                 </div>
 
                 <Button
                   type="submit"
-                  variant="primary"
+                  variant="default"
                   size="lg"
                   className="w-full md:w-auto border-0"
                 >

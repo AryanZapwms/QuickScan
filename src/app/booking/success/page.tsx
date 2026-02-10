@@ -122,7 +122,7 @@ function BookingSuccessContent() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <FiLoader className="animate-spin text-4xl text-blue-600 mx-auto mb-4" />
+          <FiLoader className="animate-spin text-4xl text-primary mx-auto mb-4" />
           <p className="text-gray-600">Loading booking details...</p>
         </div>
       </div>
@@ -161,8 +161,8 @@ function BookingSuccessContent() {
               the confirmation details to your email and phone.
             </p>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
-              <div className="text-2xl font-bold text-blue-600 mb-2">
+            <div className="bg-secondary/50 border border-border rounded-xl p-6 mb-8">
+              <div className="text-2xl font-bold text-primary mb-2">
                 Booking ID: {booking?.bookingId || bookingId}
               </div>
               <p className="text-gray-700">
@@ -180,8 +180,8 @@ function BookingSuccessContent() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex items-start">
-                    <div className="bg-white p-3 rounded-lg mr-4">
-                      <FiCalendar className="text-blue-600" />
+                    <div className="bg-background p-3 rounded-lg mr-4 border border-border">
+                      <FiCalendar className="text-primary" />
                     </div>
                     <div>
                       <div className="text-sm text-gray-600">Date & Time</div>
@@ -192,8 +192,8 @@ function BookingSuccessContent() {
                   </div>
 
                   <div className="flex items-start">
-                    <div className="bg-white p-3 rounded-lg mr-4">
-                      <FiPackage className="text-blue-600" />
+                    <div className="bg-background p-3 rounded-lg mr-4 border border-border">
+                      <FiPackage className="text-primary" />
                     </div>
                     <div>
                       <div className="text-sm text-gray-600">Service</div>
@@ -202,8 +202,8 @@ function BookingSuccessContent() {
                   </div>
 
                   <div className="flex items-start">
-                    <div className="bg-white p-3 rounded-lg mr-4">
-                      <FiUser className="text-blue-600" />
+                    <div className="bg-background p-3 rounded-lg mr-4 border border-border">
+                      <FiUser className="text-primary" />
                     </div>
                     <div>
                       <div className="text-sm text-gray-600">Patient Name</div>
@@ -217,8 +217,8 @@ function BookingSuccessContent() {
                   </div>
 
                   <div className="flex items-start">
-                    <div className="bg-white p-3 rounded-lg mr-4">
-                      <FiCreditCard className="text-blue-600" />
+                    <div className="bg-background p-3 rounded-lg mr-4 border border-border">
+                      <FiCreditCard className="text-primary" />
                     </div>
                     <div>
                       <div className="text-sm text-gray-600">Amount Paid</div>
@@ -230,8 +230,8 @@ function BookingSuccessContent() {
                   </div>
 
                   <div className="flex items-start">
-                    <div className="bg-white p-3 rounded-lg mr-4">
-                      <FiMapPin className="text-blue-600" />
+                    <div className="bg-background p-3 rounded-lg mr-4 border border-border">
+                      <FiMapPin className="text-primary" />
                     </div>
                     <div>
                       <div className="text-sm text-gray-600">Lab Location</div>
@@ -243,8 +243,8 @@ function BookingSuccessContent() {
                   </div>
 
                   <div className="flex items-start">
-                    <div className="bg-white p-3 rounded-lg mr-4">
-                      <FiMail className="text-blue-600" />
+                    <div className="bg-background p-3 rounded-lg mr-4 border border-border">
+                      <FiMail className="text-primary" />
                     </div>
                     <div>
                       <div className="text-sm text-gray-600">Contact</div>
@@ -281,7 +281,7 @@ function BookingSuccessContent() {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               <Button 
-                variant="primary" 
+                variant="default" 
                 onClick={downloadReceipt}
                 disabled={!booking}
               >
@@ -305,8 +305,8 @@ function BookingSuccessContent() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-blue-600 font-bold">1</span>
+                <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-primary font-bold">1</span>
                 </div>
                 <h4 className="font-bold mb-2">Confirmation Call</h4>
                 <p className="text-gray-600 text-sm">
@@ -341,11 +341,11 @@ function BookingSuccessContent() {
               </p>
               <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8">
                 <div className="flex items-center">
-                  <FiPhone className="text-blue-600 mr-2" />
+                  <FiPhone className="text-primary mr-2" />
                   <span className="font-semibold">1800-123-4567</span>
                 </div>
                 <div className="flex items-center">
-                  <FiMail className="text-blue-600 mr-2" />
+                  <FiMail className="text-primary mr-2" />
                   <span className="font-semibold">support@quickscan.com</span>
                 </div>
               </div>
@@ -363,7 +363,7 @@ export default function BookingSuccessPage() {
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <FiLoader className="animate-spin text-4xl text-blue-600 mx-auto mb-4" />
+          <FiLoader className="animate-spin text-4xl text-primary mx-auto mb-4" />
           <p className="text-gray-600">Loading booking details...</p>
         </div>
       </div>

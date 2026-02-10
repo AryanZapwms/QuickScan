@@ -57,12 +57,12 @@ export default function BookingStep2({ data, updateData, nextStep, prevStep }: S
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-8">Patient Details</h2>
+      <h2 className="text-2xl font-bold mb-8 text-foreground">Patient Details</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* Patient Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             <FiUser className="inline mr-2" />
             Patient Full Name *
           </label>
@@ -70,21 +70,21 @@ export default function BookingStep2({ data, updateData, nextStep, prevStep }: S
             type="text"
             value={data.patientName || ''}
             onChange={(e) => handleChange('patientName', e.target.value)}
-            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 ${
+            className={`w-full border rounded-lg p-3 bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent ${
               errors.patientName 
-                ? 'border-red-500 focus:ring-red-500' 
-                : 'border-gray-300 focus:ring-blue-500'
+                ? 'border-destructive focus:ring-destructive' 
+                : 'border-input'
             }`}
             placeholder="Enter patient's full name"
           />
           {errors.patientName && (
-            <p className="mt-1 text-sm text-red-600">{errors.patientName}</p>
+            <p className="mt-1 text-sm text-destructive">{errors.patientName}</p>
           )}
         </div>
 
         {/* Patient Age */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             <FiCalendar className="inline mr-2" />
             Age
           </label>
@@ -94,34 +94,34 @@ export default function BookingStep2({ data, updateData, nextStep, prevStep }: S
             max="120"
             value={data.patientAge || ''}
             onChange={(e) => handleChange('patientAge', parseInt(e.target.value) || '')}
-            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 ${
+            className={`w-full border rounded-lg p-3 bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent ${
               errors.patientAge 
-                ? 'border-red-500 focus:ring-red-500' 
-                : 'border-gray-300 focus:ring-blue-500'
+                ? 'border-destructive focus:ring-destructive' 
+                : 'border-input'
             }`}
             placeholder="Enter age"
           />
           {errors.patientAge && (
-            <p className="mt-1 text-sm text-red-600">{errors.patientAge}</p>
+            <p className="mt-1 text-sm text-destructive">{errors.patientAge}</p>
           )}
         </div>
 
         {/* Gender */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Gender
           </label>
           <div className="flex space-x-4">
             {['male', 'female', 'other'].map((gender) => (
-              <label key={gender} className="flex items-center">
+              <label key={gender} className="flex items-center cursor-pointer">
                 <input
                   type="radio"
                   name="gender"
                   checked={data.patientGender === gender}
                   onChange={() => handleChange('patientGender', gender)}
-                  className="mr-2"
+                  className="mr-2 text-primary focus:ring-primary"
                 />
-                <span className="capitalize">{gender}</span>
+                <span className="capitalize text-foreground">{gender}</span>
               </label>
             ))}
           </div>
@@ -129,7 +129,7 @@ export default function BookingStep2({ data, updateData, nextStep, prevStep }: S
 
         {/* Email */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             <FiMail className="inline mr-2" />
             Email Address *
           </label>
@@ -137,21 +137,21 @@ export default function BookingStep2({ data, updateData, nextStep, prevStep }: S
             type="email"
             value={data.patientEmail || ''}
             onChange={(e) => handleChange('patientEmail', e.target.value)}
-            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 ${
+            className={`w-full border rounded-lg p-3 bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent ${
               errors.patientEmail 
-                ? 'border-red-500 focus:ring-red-500' 
-                : 'border-gray-300 focus:ring-blue-500'
+                ? 'border-destructive focus:ring-destructive' 
+                : 'border-input'
             }`}
             placeholder="Enter email address"
           />
           {errors.patientEmail && (
-            <p className="mt-1 text-sm text-red-600">{errors.patientEmail}</p>
+            <p className="mt-1 text-sm text-destructive">{errors.patientEmail}</p>
           )}
         </div>
 
         {/* Phone Number */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             <FiPhone className="inline mr-2" />
             Phone Number *
           </label>
@@ -159,43 +159,43 @@ export default function BookingStep2({ data, updateData, nextStep, prevStep }: S
             type="tel"
             value={data.patientPhone || ''}
             onChange={(e) => handleChange('patientPhone', e.target.value)}
-            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 ${
+            className={`w-full border rounded-lg p-3 bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent ${
               errors.patientPhone 
-                ? 'border-red-500 focus:ring-red-500' 
-                : 'border-gray-300 focus:ring-blue-500'
+                ? 'border-destructive focus:ring-destructive' 
+                : 'border-input'
             }`}
             placeholder="Enter 10-digit mobile number"
           />
           {errors.patientPhone && (
-            <p className="mt-1 text-sm text-red-600">{errors.patientPhone}</p>
+            <p className="mt-1 text-sm text-destructive">{errors.patientPhone}</p>
           )}
         </div>
 
         {/* Relationship (if not booking for self) */}
         <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-foreground mb-2">
             Booking For
           </label>
           <div className="flex space-x-6">
-            <label className="flex items-center">
+            <label className="flex items-center cursor-pointer">
               <input
                 type="radio"
                 name="bookingFor"
                 checked={!data.bookingForOthers}
                 onChange={() => handleChange('bookingForOthers', false)}
-                className="mr-2"
+                className="mr-2 text-primary focus:ring-primary"
               />
-              <span>Myself</span>
+              <span className="text-foreground">Myself</span>
             </label>
-            <label className="flex items-center">
+            <label className="flex items-center cursor-pointer">
               <input
                 type="radio"
                 name="bookingFor"
                 checked={data.bookingForOthers}
                 onChange={() => handleChange('bookingForOthers', true)}
-                className="mr-2"
+                className="mr-2 text-primary focus:ring-primary"
               />
-              <span>Someone else (family member/friend)</span>
+              <span className="text-foreground">Someone else (family member/friend)</span>
             </label>
           </div>
         </div>
@@ -203,29 +203,29 @@ export default function BookingStep2({ data, updateData, nextStep, prevStep }: S
 
       {/* Emergency Contact (Optional) */}
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-4">Emergency Contact (Optional)</h3>
+        <h3 className="text-lg font-semibold mb-4 text-foreground">Emergency Contact (Optional)</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Emergency Contact Name
             </label>
             <input
               type="text"
               value={data.emergencyContactName || ''}
               onChange={(e) => handleChange('emergencyContactName', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-input rounded-lg p-3 bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
               placeholder="Emergency contact name"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Emergency Contact Phone
             </label>
             <input
               type="tel"
               value={data.emergencyContactPhone || ''}
               onChange={(e) => handleChange('emergencyContactPhone', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-input rounded-lg p-3 bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
               placeholder="Emergency contact phone"
             />
           </div>
@@ -237,7 +237,7 @@ export default function BookingStep2({ data, updateData, nextStep, prevStep }: S
         <Button onClick={prevStep} variant="outline">
           ← Back to Service Selection
         </Button>
-        <Button onClick={handleNext} variant="primary">
+        <Button onClick={handleNext} variant="default">
           Continue to Time & Location
         </Button>
       </div>

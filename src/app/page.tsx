@@ -17,31 +17,34 @@ export default function HomePage() {
       <FAQSection />
       
       {/* Final CTA - Fixed responsive issues */}
-      <section className="py-12 md:py-16 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
-        <div className="container-custom px-4 md:px-6 text-center">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6">
-            Looking for something specific?
+      <section className="py-20 bg-primary text-primary-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">
+            Ready to Prioritize Your Health?
           </h2>
-          <p className="text-base md:text-lg lg:text-xl text-blue-100 mb-8 md:mb-10 max-w-2xl mx-auto px-2 md:px-0">
-            Book any medical test, scan, or health package with our expert guidance
+          <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto mb-10">
+            Book your appointment today and experience the QuickScan difference.
+            Fast, accurate, and caring service awaits.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 md:gap-6">
-            <Button 
-              href="/booking" 
-              variant="secondary"
-              size="lg"
-              className="bg-white text-blue-700  hover:bg-blue-50 no-underline text-sm md:text-base  sm:w-auto px-4 py-3 md:px-6 md:py-4"
-            >
-              Book an MRI Scan
-            </Button>
-            <Button 
-              href="/services" 
-              variant="outline"
-              size="lg"
-              className="border-2 border-white text-white hover:bg-white/10 no-underline text-sm md:text-base  sm:w-auto px-4 py-3 md:px-6 md:py-4"
-            >
-              View All Services
-            </Button>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="/book">
+              <Button
+                variant="secondary"
+                size="lg"
+                 className="w-full sm:w-auto text-lg px-8 py-6 text-font-semibold border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground text-black"
+              >
+                Book an Appointment Now
+              </Button>
+            </a>
+            <a href="/contact">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto  text-lg px-8 py-6 text-font-semibold border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground text-black"
+              >
+                Contact Support
+              </Button>
+            </a>
           </div>
         </div>
       </section>

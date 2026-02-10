@@ -20,12 +20,12 @@ export default function AboutPage() {
   return (
     <div className="pt-35 pb-20">
       {/* Hero */}
-      <div className="relative bg-gradient-to-r from-blue-600 to-cyan-600 py-20">
-        <div className="container-custom px-4 text-white text-center">
+      <div className="relative bg-primary py-20">
+        <div className="container-custom px-4 text-primary-foreground text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             About QuickScan
           </h1>
-          <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-primary-foreground/80 max-w-3xl mx-auto">
             India&apos;s most trusted diagnostic service provider, making 
             healthcare accessible and affordable for everyone.
           </p>
@@ -66,11 +66,11 @@ export default function AboutPage() {
             <div className="grid grid-cols-2 md:grid-cols-5 gap-8 relative">
               {milestones.map((milestone, index) => (
                 <div key={index} className="text-center">
-                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
-                    <span className="text-white font-bold text-lg">{milestone.year}</span>
+                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 relative z-10">
+                    <span className="text-primary-foreground font-bold text-lg">{milestone.year}</span>
                   </div>
                   <h3 className="font-bold text-lg mb-2">{milestone.title}</h3>
-                  <p className="text-gray-600 text-sm">{milestone.description}</p>
+                  <p className="text-muted-foreground text-sm">{milestone.description}</p>
                 </div>
               ))}
             </div>
@@ -82,12 +82,12 @@ export default function AboutPage() {
           <h2 className="text-3xl font-bold text-center mb-12">Our Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((value, index) => (
-              <div key={index} className="text-center p-8 rounded-2xl border border-gray-200 hover:shadow-lg transition duration-300">
-                <div className="text-4xl mb-6 text-blue-600">
+              <div key={index} className="text-center p-8 rounded-2xl border border-border hover:border-primary/30 hover:shadow-sm transition duration-300">
+                <div className="text-4xl mb-6 text-primary">
                   {value.icon}
                 </div>
                 <h3 className="text-xl font-bold mb-4">{value.title}</h3>
-                <p className="text-gray-600">{value.description}</p>
+                <p className="text-muted-foreground">{value.description}</p>
               </div>
             ))}
           </div>
@@ -103,17 +103,17 @@ export default function AboutPage() {
                   <span className="text-3xl">{member.emoji}</span>
                 </div>
                 <h3 className="font-bold text-lg">{member.name}</h3>
-                <p className="text-blue-600 mb-2">{member.role}</p>
-                <p className="text-gray-600 text-sm">{member.description}</p>
+                <p className="text-primary mb-2 font-medium">{member.role}</p>
+                <p className="text-muted-foreground text-sm">{member.description}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-12 text-center">
+        <div className="bg-secondary/30 border border-border rounded-2xl p-12 text-center">
           <h2 className="text-3xl font-bold mb-6">Join Us in Revolutionizing Healthcare</h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Whether you&apos;re a patient, healthcare provider, or investor, 
             there&apos;s a place for you in our journey.
           </p>

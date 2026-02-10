@@ -85,36 +85,36 @@ export default function BookingStep1({ data, updateData, nextStep }: Step1Props)
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-8">Select Service & Type</h2>
+      <h2 className="text-2xl font-bold mb-8 text-foreground">Select Service & Type</h2>
       
       {/* Service Selection */}
       <div className="mb-10">
-        <h3 className="text-lg font-semibold mb-4">Choose a Service</h3>
+        <h3 className="text-lg font-semibold mb-4 text-foreground">Choose a Service</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => (
             <div
               key={service.slug || service.id}
               className={`border-2 rounded-xl p-6 cursor-pointer transition-all duration-300
                 ${selectedService === (service.slug || service.id)
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-blue-300'
+                  ? 'border-primary bg-secondary/50'
+                  : 'border-border hover:border-primary/50'
                 }`}
               onClick={() => handleServiceSelect(service)}
             >
               <div className="flex justify-between items-start mb-4">
-                <h4 className="font-bold text-lg">{service.name}</h4>
+                <h4 className="font-bold text-lg text-foreground">{service.name}</h4>
                 {selectedService === (service.slug || service.id) && (
-                  <FiCheck className="text-blue-600 text-xl" />
+                  <FiCheck className="text-primary text-xl" />
                 )}
               </div>
               
               <div className="mb-4">
                 <div className="flex items-baseline">
-                  <span className="text-2xl font-bold text-blue-600">
+                  <span className="text-2xl font-bold text-primary">
                     ₹{service.discountedPrice || service.price}
                   </span>
                   {service.originalPrice > service.discountedPrice && (
-                    <span className="text-gray-500 line-through ml-2">
+                    <span className="text-muted-foreground line-through ml-2">
                       ₹{service.originalPrice}
                     </span>
                   )}
@@ -123,7 +123,7 @@ export default function BookingStep1({ data, updateData, nextStep }: Step1Props)
               
               <ul className="space-y-2 mb-4">
                 {service.features?.slice(0, 3).map((feature: string, idx: number) => (
-                  <li key={idx} className="flex items-center text-sm text-gray-600">
+                  <li key={idx} className="flex items-center text-sm text-muted-foreground">
                     <FiCheck className="text-green-500 mr-2" size={14} />
                     {feature}
                   </li>
@@ -136,31 +136,31 @@ export default function BookingStep1({ data, updateData, nextStep }: Step1Props)
 
       {/* Appointment Type */}
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-4">Appointment Type</h3>
+        <h3 className="text-lg font-semibold mb-4 text-foreground">Appointment Type</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Lab Visit Card - Always enabled */}
           <div
             className={`border-2 rounded-xl p-6 cursor-pointer transition-all duration-300
               ${data.appointmentType === 'lab-visit'
-                ? 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:border-blue-300'
+                ? 'border-primary bg-secondary/50'
+                : 'border-border hover:border-primary/50'
               }`}
             onClick={() => handleAppointmentTypeChange('lab-visit')}
           >
             <div className="flex items-center mb-4">
               <div className={`p-3 rounded-lg mr-4 ${
-                data.appointmentType === 'lab-visit' ? 'bg-blue-100' : 'bg-gray-100'
+                data.appointmentType === 'lab-visit' ? 'bg-primary/10' : 'bg-muted'
               }`}>
                 <FiMapPin className={`text-xl ${
-                  data.appointmentType === 'lab-visit' ? 'text-blue-600' : 'text-gray-600'
+                  data.appointmentType === 'lab-visit' ? 'text-primary' : 'text-muted-foreground'
                 }`} />
               </div>
               <div>
-                <h4 className="font-bold text-lg">Visit Lab Centre</h4>
-                <p className="text-gray-600 text-sm">Walk-in to our diagnostic center</p>
+                <h4 className="font-bold text-lg text-foreground">Visit Lab Centre</h4>
+                <p className="text-muted-foreground text-sm">Walk-in to our diagnostic center</p>
               </div>
             </div>
-            <ul className="space-y-2 text-sm text-gray-600">
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-center">
                 <FiCheck className="mr-2" size={14} />
                 Advanced equipment available
@@ -180,10 +180,10 @@ export default function BookingStep1({ data, updateData, nextStep }: Step1Props)
           <div
             className={`border-2 rounded-xl p-6 transition-all duration-300 ${
               isRestrictedService() 
-                ? 'border-gray-300 bg-gray-100 cursor-not-allowed opacity-75' 
+                ? 'border-border bg-muted/50 cursor-not-allowed opacity-75' 
                 : data.appointmentType === 'home-service'
-                  ? 'border-green-500 bg-green-50 cursor-pointer'
-                  : 'border-gray-200 hover:border-green-300 cursor-pointer'
+                  ? 'border-primary bg-secondary/50 cursor-pointer'
+                  : 'border-border hover:border-primary/50 cursor-pointer'
             }`}
             onClick={() => {
               if (!isRestrictedService()) {
@@ -194,27 +194,27 @@ export default function BookingStep1({ data, updateData, nextStep }: Step1Props)
             <div className="flex items-center mb-4">
               <div className={`p-3 rounded-lg mr-4 ${
                 isRestrictedService() 
-                  ? 'bg-gray-200' 
+                  ? 'bg-muted' 
                   : data.appointmentType === 'home-service' 
-                    ? 'bg-green-100' 
-                    : 'bg-gray-100'
+                    ? 'bg-primary/10' 
+                    : 'bg-muted'
               }`}>
                 <FiHome className={`text-xl ${
                   isRestrictedService() 
-                    ? 'text-gray-500' 
+                    ? 'text-muted-foreground' 
                     : data.appointmentType === 'home-service' 
-                      ? 'text-green-600' 
-                      : 'text-gray-600'
+                      ? 'text-primary' 
+                      : 'text-muted-foreground'
                 }`} />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-bold text-lg">Home Service</h4>
-                    <p className="text-gray-600 text-sm">Sample collection at your home</p>
+                    <h4 className="font-bold text-lg text-foreground">Home Service</h4>
+                    <p className="text-muted-foreground text-sm">Sample collection at your home</p>
                   </div>
                   {isRestrictedService() && (
-                    <div className="flex items-center text-amber-600 text-sm bg-amber-50 px-3 py-1 rounded-full">
+                    <div className="flex items-center text-amber-600 text-sm bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
                       <FiAlertCircle className="mr-1" size={14} />
                       Not available
                     </div>
@@ -225,14 +225,14 @@ export default function BookingStep1({ data, updateData, nextStep }: Step1Props)
             
             {isRestrictedService() ? (
               <div className="mb-4">
-                <div className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg">
+                <div className="text-sm text-muted-foreground bg-muted p-3 rounded-lg">
                   <p className="font-medium">Home service not available for MRI/CT scans</p>
                   <p className="mt-1">These services require specialized equipment only available at our diagnostic centers.</p>
                 </div>
               </div>
             ) : (
               <>
-                <ul className="space-y-2 text-sm text-gray-600 mb-4">
+                <ul className="space-y-2 text-sm text-muted-foreground mb-4">
                   <li className="flex items-center">
                     <FiCheck className="mr-2" size={14} />
                     Free in metro cities*
@@ -260,7 +260,7 @@ export default function BookingStep1({ data, updateData, nextStep }: Step1Props)
         <Button
           onClick={nextStep}
           disabled={!canProceed}
-          variant="primary"
+          variant="default"
         >
           Continue to Patient Details
         </Button>

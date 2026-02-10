@@ -4,13 +4,13 @@ import { FiArrowLeft } from 'react-icons/fi';
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center py-12">
-      <div className="w-full max-w-md px-4">
+    <div className="min-h-screen flex items-center justify-center py-12">
+      <div className="w-full max-w-md px-4 ">
         <Link 
           href="/" 
-          className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8"
+          className="inline-flex items-center border-1 rounded-xl px-3 py-2 text-black hover:text-white hover:bg-black transition-colors duration-300 mb-8"
         >
-          <FiArrowLeft className="mr-2" />
+          <FiArrowLeft className="mr-2 " />
           Back to Home
         </Link>
         

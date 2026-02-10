@@ -37,7 +37,7 @@ export default function LabsPage() {
   return (
     <div className="pt-30 pb-20">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 py-16">
+      <div className="bg-secondary/30 border-y border-border py-16">
         <div className="container-custom px-4">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Find Diagnostic Centers Near You
@@ -52,7 +52,7 @@ export default function LabsPage() {
               <div className="relative ">
                 <FiMapPin className="absolute left-4 top-6 transform -translate-y-1/2 text-gray-400" />
                 <select
-                  className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-12 pr-4 py-4 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
                 >
@@ -69,16 +69,16 @@ export default function LabsPage() {
                 <input
                   type="text"
                   placeholder="Search for labs or services..."
-                  className="w- pl-12 pr-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-12 pr-4 py-4 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
 
               <Button
-                variant="primary"
+                variant="default"
                 size="lg"
-                className="h-full w-50 border-0"
+                className=" w-50 border-0"
               >
                 Search Labs
               </Button>
@@ -139,7 +139,7 @@ export default function LabsPage() {
                       <label key={rating} className="flex items-center">
                         <input type="radio" name="rating" className="mr-2" />
                         <span className="flex items-center">
-                          <FiStar className="text-yellow-400 fill-current mr-1" />
+                          <FiStar className="text-primary fill-current mr-1" />
                           {rating}+
                         </span>
                       </label>
@@ -173,7 +173,7 @@ export default function LabsPage() {
                     <div className="flex flex-col md:flex-row">
                       {/* Lab Image */}
                       <div className="md:w-1/4 mb-4 md:mb-0 md:mr-6">
-                        <div className="bg-blue-100 h-48 rounded-lg flex items-center justify-center">
+                        <div className="bg-secondary h-48 rounded-lg flex items-center justify-center">
                           <div className="text-4xl">🏥</div>
                         </div>
                       </div>
@@ -212,7 +212,7 @@ export default function LabsPage() {
                             {lab.services.map((service) => (
                               <span
                                 key={service}
-                                className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm"
+                                className="bg-secondary text-primary px-3 py-1 rounded-full text-sm font-medium"
                               >
                                 {service}
                               </span>

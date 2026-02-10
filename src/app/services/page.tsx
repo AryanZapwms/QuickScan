@@ -6,7 +6,7 @@ export default function ServicesPage() {
   return (
     <div className="pt-8 pb-20">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 py-16">
+      <div className="bg-secondary/30 border-y border-border py-16">
         <div className="container-custom px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Our Diagnostic Services
@@ -23,7 +23,7 @@ export default function ServicesPage() {
               <input 
                 type="text" 
                 placeholder="Search for tests (e.g., MRI, Blood Test, Diabetes Profile...)"
-                className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-12 pr-4 py-4 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
             </div>
           </div>
@@ -45,7 +45,7 @@ export default function ServicesPage() {
               <a 
                 key={category.id}
                 href={`/services/${category.slug}`}
-                className="group p-6 bg-gray-50 rounded-xl hover:bg-blue-50 hover:shadow-lg transition duration-300 text-center"
+                className="group p-6 bg-secondary/50 rounded-xl hover:bg-secondary hover:shadow-sm border border-transparent hover:border-border transition duration-300 text-center"
               >
                 <div className="text-4xl mb-4 group-hover:scale-110 transition duration-300">
                   {category.icon}
@@ -67,17 +67,17 @@ export default function ServicesPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center p-6">
-              <div className="text-blue-600 text-5xl mb-4">🏥</div>
+              <div className="text-primary text-5xl mb-4">🏥</div>
               <h3 className="text-xl font-bold mb-3">NABL Accredited Labs</h3>
               <p className="text-gray-600">All partner labs are NABL accredited ensuring highest quality standards</p>
             </div>
             <div className="text-center p-6">
-              <div className="text-green-600 text-5xl mb-4">💯</div>
+              <div className="text-primary text-5xl mb-4">💯</div>
               <h3 className="text-xl font-bold mb-3">Best Price Guarantee</h3>
               <p className="text-gray-600">Found a lower price? We&apos;ll match it and give you 10% additional discount</p>
             </div>
             <div className="text-center p-6">
-              <div className="text-purple-600 text-5xl mb-4">🏠</div>
+              <div className="text-primary text-5xl mb-4">🏠</div>
               <h3 className="text-xl font-bold mb-3">Free Home Collection</h3>
               <p className="text-gray-600">Free home sample collection for tests above ₹999 in selected cities</p>
             </div>

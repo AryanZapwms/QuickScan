@@ -56,7 +56,7 @@ const FAQSection = () => {
               className="mb-3 border border-gray-200 rounded-lg overflow-hidden"
             >
               <button
-                className="w-full text-left p-3 md:p-4 bg-gray-50 hover:bg-gray-100 transition duration-300 flex justify-between items-center gap-3"
+                className="w-full text-left p-3 md:p-4 bg-secondary/50 hover:bg-secondary transition duration-300 flex justify-between items-center gap-3"
                 onClick={() => toggleFAQ(index)}
                 aria-expanded={openIndex === index}
               >
@@ -64,7 +64,7 @@ const FAQSection = () => {
                   {faq.question}
                 </span>
                 {openIndex === index ? (
-                  <FiChevronUp className="text-blue-600 flex-shrink-0 w-4 h-4 md:w-5 md:h-5" />
+                  <FiChevronUp className="text-primary flex-shrink-0 w-4 h-4 md:w-5 md:h-5" />
                 ) : (
                   <FiChevronDown className="text-gray-500 flex-shrink-0 w-4 h-4 md:w-5 md:h-5" />
                 )}
@@ -84,10 +84,10 @@ const FAQSection = () => {
             Still have questions? Contact our support team
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white border-0 font-semibold py-2.5 px-6 rounded-lg text-sm transition w-full sm:w-auto">
+            <button className="bg-primary hover:bg-primary/90 text-primary-foreground border-0 font-semibold py-2.5 px-6 rounded-lg text-sm transition w-full sm:w-auto">
               Call Now: 1800-123-4567
             </button>
-            <button className="bg-white hover:bg-gray-50 text-blue-600 font-semibold py-2.5 px-6 rounded-lg border border-blue-600 text-sm transition w-full sm:w-auto">
+            <button className="bg-background hover:bg-secondary text-primary font-semibold py-2.5 px-6 rounded-lg border border-border text-sm transition w-full sm:w-auto">
               WhatsApp Support
             </button>
           </div>

@@ -151,8 +151,8 @@ export default function BookingWizard({
                 className={`w-12 h-12 rounded-full flex items-center justify-center mb-3
                 ${
                   currentStep >= step.number
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-500"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-muted-foreground"
                 }`}
               >
                 {step.number}
@@ -161,8 +161,8 @@ export default function BookingWizard({
                 <div
                   className={`font-semibold text-sm ${
                     currentStep >= step.number
-                      ? "text-blue-600"
-                      : "text-gray-500"
+                      ? "text-primary"
+                      : "text-muted-foreground"
                   }`}
                 >
                   {step.title}
@@ -174,7 +174,7 @@ export default function BookingWizard({
               {step.number < steps.length && (
                 <div
                   className={`absolute top-6 left-1/2 w-full h-0.5 -z-10
-                  ${currentStep > step.number ? "bg-blue-600" : "bg-gray-200"}`}
+                  ${currentStep > step.number ? "bg-primary" : "bg-secondary"}`}
                 />
               )}
             </div>

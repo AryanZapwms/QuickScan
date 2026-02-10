@@ -80,7 +80,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-16  flex flex-col justify-center items-center bg-white rounded-xl shadow-lg p-7">
+    <div className="border-1 rounded-xl shadow-lg px-5 flex flex-col justify-center items-center bg-white rounded-xl shadow-lg p-7">
       <h2 className="text-2xl font-bold text-center mb-6">Create Account</h2>
 
       {error && (
@@ -97,8 +97,8 @@ export default function RegisterForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6 overflow-auto">
-        <div className="  w-100">
+      <form onSubmit={handleSubmit} className="space-y-6 w-full overflow-auto">
+        <div className="">
           <label className="block text-sm  font-medium text-gray-700 mb-2">
             <FiUser className="inline mr-2" />
             Full Name
@@ -109,7 +109,7 @@ export default function RegisterForm() {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border w-90 border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="Enter your full name"
           />
         </div>
@@ -125,7 +125,7 @@ export default function RegisterForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border w-90  border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="Enter your email"
           />
         </div>
@@ -141,7 +141,7 @@ export default function RegisterForm() {
             value={formData.phone}
             onChange={handleChange}
             required
-            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className=" border w-90 border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="Enter 10-digit mobile number"
           />
         </div>
@@ -157,7 +157,7 @@ export default function RegisterForm() {
             value={formData.password}
             onChange={handleChange}
             required
-            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className=" border w-90  border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="Create password (min 6 characters)"
           />
         </div>
@@ -173,12 +173,12 @@ export default function RegisterForm() {
             value={formData.confirmPassword}
             onChange={handleChange}
             required
-            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="items-center w-90  border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder="Confirm your password"
           />
         </div>
 
-        <Button type="submit" variant="primary" fullWidth disabled={loading}>
+        <Button type="submit" variant="default" className="w-full" disabled={loading}>
           {loading ? "Creating Account..." : "Create Account"}
         </Button>
       </form>
@@ -188,7 +188,7 @@ export default function RegisterForm() {
           Already have an account?{" "}
           <Link
             href="/login"
-            className="text-blue-600 hover:text-blue-700 font-semibold"
+            className="text-primary hover:text-primary/80 font-semibold"
           >
             Login
           </Link>

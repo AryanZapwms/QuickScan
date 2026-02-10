@@ -17,7 +17,7 @@ export default function HealthCheckupPage() {
   return (
     <div className="pt-30 pb-20">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-green-50 to-emerald-50 py-12">
+      <div className="bg-secondary/30 border-y border-border py-12">
         <div className="container-custom px-4">
           <div className="max-w-4xl">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -25,7 +25,7 @@ export default function HealthCheckupPage() {
             </h1>
             <p className="text-xl text-gray-600 mb-8">{service.description}</p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
-              <div className="text-3xl font-bold text-green-600">
+              <div className="text-3xl font-bold text-primary">
                 ₹{service.price}
                 <span className="text-lg text-gray-500 line-through ml-2">
                   ₹{service.originalPrice}
@@ -34,7 +34,7 @@ export default function HealthCheckupPage() {
               <Button
                 href={`/booking?service=health-checkup`}
                 size="lg"
-                className="bg-green-600 hover:bg-green-700 no-underline"
+                className="no-underline"
               >
                 Book Health Checkup
               </Button>
@@ -60,29 +60,29 @@ export default function HealthCheckupPage() {
               </p>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                <div className="text-center p-4 border border-gray-200 rounded-lg">
-                  <FiClock className="text-green-600 text-2xl mx-auto mb-2" />
+                <div className="text-center p-4 border border-border rounded-lg">
+                  <FiClock className="text-primary text-2xl mx-auto mb-2" />
                   <div className="font-bold">Report Time</div>
                   <div className="text-sm text-gray-600">
                     {service.reportTime}
                   </div>
                 </div>
-                <div className="text-center p-4 border border-gray-200 rounded-lg">
-                  <FiFileText className="text-blue-600 text-2xl mx-auto mb-2" />
+                <div className="text-center p-4 border border-border rounded-lg">
+                  <FiFileText className="text-primary text-2xl mx-auto mb-2" />
                   <div className="font-bold">Sample Required</div>
                   <div className="text-sm text-gray-600">
                     {service.sampleRequired}
                   </div>
                 </div>
-                <div className="text-center p-4 border border-gray-200 rounded-lg">
-                  <FiHome className="text-purple-600 text-2xl mx-auto mb-2" />
+                <div className="text-center p-4 border border-border rounded-lg">
+                  <FiHome className="text-primary text-2xl mx-auto mb-2" />
                   <div className="font-bold">Home Service</div>
                   <div className="text-sm text-gray-600">
                     {service.homeService}
                   </div>
                 </div>
-                <div className="text-center p-4 border border-gray-200 rounded-lg">
-                  <FiShield className="text-red-600 text-2xl mx-auto mb-2" />
+                <div className="text-center p-4 border border-border rounded-lg">
+                  <FiShield className="text-primary text-2xl mx-auto mb-2" />
                   <div className="font-bold">Fasting</div>
                   <div className="text-sm text-gray-600">8-12 Hours</div>
                 </div>
@@ -94,7 +94,7 @@ export default function HealthCheckupPage() {
               <ul className="space-y-3">
                 {service.features.map((feature: string, index: number) => (
                   <li key={index} className="flex items-center">
-                    <FiCheck className="text-green-500 mr-3" />
+                    <FiCheck className="text-primary mr-3" />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -102,8 +102,8 @@ export default function HealthCheckupPage() {
             </div>
 
             {/* Who Should Take This Checkup */}
-            <div className="mt-8 bg-green-50 border border-green-200 rounded-xl p-6">
-              <h3 className="font-bold text-lg mb-4 text-green-800">
+            <div className="mt-8 bg-secondary/50 border border-border rounded-xl p-6">
+              <h3 className="font-bold text-lg mb-4 text-primary">
                 Who Should Take This Checkup?
               </h3>
               <div className="space-y-3">
@@ -142,7 +142,7 @@ export default function HealthCheckupPage() {
                   "Increased life expectancy",
                 ].map((item: string, index: number) => (
                   <div key={index} className="flex items-start">
-                    <FiCheck className="text-green-500 mt-1 mr-2 flex-shrink-0" />
+                    <FiCheck className="text-primary mt-1 mr-2 flex-shrink-0" />
                     <span className="text-sm">{item}</span>
                   </div>
                 ))}
@@ -158,16 +158,16 @@ export default function HealthCheckupPage() {
                 {service.packages.map((pkg: any, index: number) => (
                   <div
                     key={index}
-                    className="border border-gray-200 rounded-lg p-6 hover:border-green-300 hover:shadow-lg transition duration-300"
+                    className="border border-border rounded-lg p-6 hover:border-primary hover:shadow-sm border border-transparent hover:border-border transition duration-300"
                   >
                     <h3 className="font-bold text-lg mb-3">{pkg.name}</h3>
-                    <div className="text-2xl font-bold text-green-600 mb-4">
+                    <div className="text-2xl font-bold text-primary mb-4">
                       ₹{pkg.price}
                     </div>
                     <ul className="space-y-2 mb-6">
                       {pkg.tests.slice(0, 4).map((test: string, idx: number) => (
                         <li key={idx} className="flex items-center text-sm">
-                          <FiCheck className="text-green-500 mr-2" size={14} />
+                          <FiCheck className="text-primary mr-2" size={14} />
                           {test}
                         </li>
                       ))}
@@ -180,7 +180,6 @@ export default function HealthCheckupPage() {
                     <Button
                       href={`/booking?package=${pkg.name}`}
                       variant="outline"
-                      fullWidth
                       className="no-underline w-full"
                     >
                       Book now
@@ -197,7 +196,7 @@ export default function HealthCheckupPage() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-bold text-lg mb-4 text-green-600">
+                  <h3 className="font-bold text-lg mb-4 text-primary">
                     Blood Tests
                   </h3>
                   <ul className="space-y-2">
@@ -219,7 +218,7 @@ export default function HealthCheckupPage() {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg mb-4 text-blue-600">
+                  <h3 className="font-bold text-lg mb-4 text-primary">
                     Additional Tests
                   </h3>
                   <ul className="space-y-2">
@@ -306,7 +305,7 @@ export default function HealthCheckupPage() {
 
               <div className="mb-6">
                 <div className="flex items-baseline mb-2">
-                  <span className="text-3xl font-bold text-green-600">
+                  <span className="text-3xl font-bold text-primary">
                     ₹{service.price}
                   </span>
                   <span className="text-gray-500 line-through ml-2">
@@ -326,7 +325,7 @@ export default function HealthCheckupPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Select City
                   </label>
-                  <select className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                  <select className="w-full border border-border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/20">
                     <option>Mumbai</option>
                     <option>Delhi</option>
                     <option>Bangalore</option>
@@ -340,7 +339,7 @@ export default function HealthCheckupPage() {
                     Service Type
                   </label>
                   <div className="space-y-2">
-                    <label className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50">
+                    <label className="flex items-center p-3 border border-border rounded-lg cursor-pointer hover:bg-secondary">
                       <input
                         type="radio"
                         name="serviceType"
@@ -354,7 +353,7 @@ export default function HealthCheckupPage() {
                         </div>
                       </div>
                     </label>
-                    <label className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-green-50">
+                    <label className="flex items-center p-3 border border-border rounded-lg cursor-pointer hover:bg-secondary">
                       <input type="radio" name="serviceType" className="mr-3" />
                       <div>
                         <div className="font-medium">
@@ -371,16 +370,15 @@ export default function HealthCheckupPage() {
 
               <Button
                 href={`/booking?service=health-checkup`}
-                className="bg-green-600 hover:bg-green-700 no-underline"
+                className="no-underline"
                 size="lg"
-                fullWidth
               >
                 Proceed to Book
               </Button>
 
               <div className="mt-6 text-sm text-gray-600 space-y-2">
                 <p className="flex items-center">
-                  <FiCheck className="text-green-500 mr-2" />
+                  <FiCheck className="text-primary mr-2" />
                   Free doctor consultation included
                 </p>
                 <p className="flex items-center">

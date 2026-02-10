@@ -190,11 +190,11 @@ export default function BookingStep3({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-8">Select Time & Location</h2>
+      <h2 className="text-2xl font-bold mb-8 text-foreground">Select Time & Location</h2>
 
       {/* City Selection */}
       <div className="mb-8">
-        <label className="block text-lg font-semibold mb-4">
+        <label className="block text-lg font-semibold mb-4 text-foreground">
           <FiMapPin className="inline mr-2" />
           Select City
         </label>
@@ -205,8 +205,8 @@ export default function BookingStep3({
               onClick={() => setSelectedCity(city)}
               className={`px-6 py-3 rounded-lg border-2 transition-all duration-300 ${
                 selectedCity === city
-                  ? "border-blue-500 bg-blue-50 text-blue-600"
-                  : "border-gray-300 hover:border-blue-300"
+                  ? "border-primary bg-secondary/50 text-foreground"
+                  : "border-border hover:border-primary/50 text-muted-foreground"
               }`}
             >
               {city}
@@ -217,12 +217,12 @@ export default function BookingStep3({
 
       {/* Lab Selection */}
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-4">Select Diagnostic Center</h3>
+        <h3 className="text-lg font-semibold mb-4 text-foreground">Select Diagnostic Center</h3>
 
         {loading ? (
           <div className="text-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading labs...</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4 text-muted-foreground">Loading labs...</p>
           </div>
         ) : labs.length > 0 ? (
           <div className="space-y-4">
@@ -231,15 +231,15 @@ export default function BookingStep3({
                 key={lab._id}
                 className={`border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 ${
                   data.labId === lab._id
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 hover:border-blue-300"
+                    ? "border-primary bg-secondary/50"
+                    : "border-border hover:border-primary/50"
                 }`}
                 onClick={() => handleLabSelect(lab)}
               >
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <div className="flex items-center mb-2">
-                      <h4 className="font-bold text-lg">{lab.name}</h4>
+                      <h4 className="font-bold text-lg text-foreground">{lab.name}</h4>
                       {lab.rating && (
                         <span className="ml-3 bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm flex items-center">
                           ⭐ {lab.rating}
@@ -247,14 +247,14 @@ export default function BookingStep3({
                       )}
                     </div>
 
-                    <div className="flex items-center text-gray-600 mb-2">
+                    <div className="flex items-center text-muted-foreground mb-2">
                       <FiMapPin className="mr-2" />
                       <span>
                         {lab.address}, {lab.city}
                       </span>
                     </div>
 
-                    <div className="flex items-center text-gray-600 mb-3">
+                    <div className="flex items-center text-muted-foreground mb-3">
                       <FiClock className="mr-2" />
                       <span>Open: {lab.openingHours}</span>
                     </div>
@@ -265,13 +265,13 @@ export default function BookingStep3({
                         .map((service: string, idx: number) => (
                           <span
                             key={idx}
-                            className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm"
+                            className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm"
                           >
                             {service}
                           </span>
                         ))}
                       {lab.services?.length > 4 && (
-                        <span className="text-gray-500 text-sm">
+                        <span className="text-muted-foreground text-sm">
                           +{lab.services.length - 4} more
                         </span>
                       )}
@@ -289,7 +289,7 @@ export default function BookingStep3({
                           "_blank"
                         );
                       }}
-                      className="flex items-center text-blue-600 hover:text-blue-700"
+                      className="flex items-center text-primary hover:text-primary/80"
                     >
                       <FiNavigation className="mr-1" />
                       Directions
@@ -300,11 +300,11 @@ export default function BookingStep3({
             ))}
           </div>
         ) : (
-          <div className="text-center py-8 bg-gray-50 rounded-xl">
-            <p className="text-gray-600">
+          <div className="text-center py-8 bg-muted/30 rounded-xl border border-border">
+            <p className="text-foreground">
               No labs found in {selectedCity} for this service
             </p>
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-muted-foreground mt-2">
               Try selecting a different city or service
             </p>
           </div>
@@ -313,7 +313,7 @@ export default function BookingStep3({
 
       {/* Date Selection */}
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-4">
+        <h3 className="text-lg font-semibold mb-4 text-foreground">
           <FiCalendar className="inline mr-2" />
           Select Date
         </h3>
@@ -324,19 +324,19 @@ export default function BookingStep3({
               onClick={() => handleDateSelect(date)}
               className={`p-4 rounded-xl border-2 flex flex-col items-center transition-all duration-300 ${
                 data.appointmentDate?.toDateString() === date.toDateString()
-                  ? "border-blue-500 bg-blue-50 text-blue-600"
-                  : "border-gray-200 hover:border-blue-300"
+                  ? "border-primary bg-secondary/50 text-foreground"
+                  : "border-border hover:border-primary/50"
               } ${isToday(date) ? "font-bold" : ""}`}
             >
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-muted-foreground">
                 {isToday(date)
                   ? "TODAY"
                   : date
                       .toLocaleDateString("en-IN", { weekday: "short" })
                       .toUpperCase()}
               </span>
-              <span className="text-2xl font-bold mt-1">{date.getDate()}</span>
-              <span className="text-sm text-gray-600">
+              <span className="text-2xl font-bold mt-1 text-foreground">{date.getDate()}</span>
+              <span className="text-sm text-muted-foreground">
                 {date.toLocaleDateString("en-IN", { month: "short" })}
               </span>
             </button>
@@ -347,7 +347,7 @@ export default function BookingStep3({
       {/* Time Slot Selection */}
       {data.appointmentDate && (
         <div className="mb-8">
-          <h3 className="text-lg font-semibold mb-4">
+          <h3 className="text-lg font-semibold mb-4 text-foreground">
             <FiClock className="inline mr-2" />
             Select Time Slot
           </h3>
@@ -359,10 +359,10 @@ export default function BookingStep3({
                 disabled={!time.available}
                 className={`p-4 rounded-xl border-2 text-center transition-all duration-300 ${
                   data.timeSlot === time.slot
-                    ? "border-blue-500 bg-blue-50 text-blue-600"
+                    ? "border-primary bg-secondary/50 text-foreground"
                     : time.available
-                    ? "border-gray-200 hover:border-blue-300"
-                    : "border-gray-100 bg-gray-50 text-gray-400 cursor-not-allowed"
+                    ? "border-border hover:border-primary/50 text-foreground"
+                    : "border-border bg-muted/50 text-muted-foreground cursor-not-allowed"
                 }`}
               >
                 <div className="font-medium">{time.slot}</div>
@@ -370,7 +370,7 @@ export default function BookingStep3({
                   {time.available ? (
                     <span className="text-green-600">Available</span>
                   ) : (
-                    <span className="text-red-600">Booked</span>
+                    <span className="text-destructive">Booked</span>
                   )}
                 </div>
               </button>
@@ -381,11 +381,11 @@ export default function BookingStep3({
 
       {/* Home Service Address (if selected) */}
       {data.appointmentType === "home-service" && (
-        <div className="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-xl">
-          <h3 className="text-lg font-semibold mb-4">Home Service Address</h3>
+        <div className="mb-8 p-6 bg-secondary/30 border border-border rounded-xl">
+          <h3 className="text-lg font-semibold mb-4 text-foreground">Home Service Address</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Complete Address *
               </label>
               <textarea
@@ -394,12 +394,12 @@ export default function BookingStep3({
                   updateData({ homeServiceAddress: e.target.value })
                 }
                 rows={3}
-                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-input rounded-lg p-3 bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
                 placeholder="Enter complete address for sample collection"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Pincode *
               </label>
               <input
@@ -408,10 +408,10 @@ export default function BookingStep3({
                 onChange={(e) =>
                   updateData({ homeServicePincode: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-input rounded-lg p-3 bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
                 placeholder="Enter pincode"
               />
-              <label className="block text-sm font-medium text-gray-700 mt-4 mb-2">
+              <label className="block text-sm font-medium text-foreground mt-4 mb-2">
                 Landmark (Optional)
               </label>
               <input
@@ -420,12 +420,12 @@ export default function BookingStep3({
                 onChange={(e) =>
                   updateData({ homeServiceLandmark: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-input rounded-lg p-3 bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
                 placeholder="Nearby landmark"
               />
             </div>
           </div>
-          <p className="text-sm text-gray-600 mt-4">
+          <p className="text-sm text-muted-foreground mt-4">
             * Home service available in selected areas. Our technician will
             arrive within the selected time slot.
           </p>
@@ -437,7 +437,7 @@ export default function BookingStep3({
         <Button onClick={prevStep} variant="outline">
           ← Back to Patient Details
         </Button>
-        <Button onClick={nextStep} variant="primary" disabled={!canProceed}>
+        <Button onClick={nextStep} variant="default" disabled={!canProceed}>
           Continue to Medical Information
         </Button>
       </div>
