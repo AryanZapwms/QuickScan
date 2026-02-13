@@ -147,6 +147,15 @@ const Header = () => {
             </div>
 
             <div className="flex items-center space-x-4">
+               {/* Urgent Booking Button */}
+               <Link 
+                  href="/booking?urgent=true"
+                  className="hidden md:flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-2 rounded-lg font-medium transition-colors no-underline shadow-sm animate-pulse"
+                >
+                  <span className="text-lg">⚡</span>
+                  <span>Urgent Booking</span>
+                </Link>
+
                  <div className="flex items-center space-x-4">
               {status === "authenticated" ? (
                 <>
@@ -250,6 +259,16 @@ const Header = () => {
                     </Link>
                   );
                 })}
+
+                {/* Mobile Urgent Booking */}
+                <Link
+                  href="/booking?urgent=true"
+                  className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors no-underline shadow-sm w-full justify-center mb-4"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span className="text-lg">⚡</span>
+                  <span>Urgent Booking</span>
+                </Link>
 
                 {/* Auth Links in Mobile */}
                 <div className="pt-4 border-t border-border space-y-3">

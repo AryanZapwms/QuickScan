@@ -36,12 +36,20 @@ export default function BookingStep1({ data, updateData, nextStep }: Step1Props)
 
   const handleServiceSelect = (service: any) => {
     setSelectedService(service.slug || service.id);
-    updateData({
+    
+    const updatePayload: any = {
       serviceId: service.slug || service.id,
       serviceName: service.name,
       serviceType: service.category,
       baseAmount: service.discountedPrice || service.price
-    });
+    };
+
+    // If urgency was selected in previous step, update the fee based on this service's price
+    if (data.isUrgent) {
+      updatePayload.urgentFee = service.urgentPrice || 500;
+    }
+
+    updateData(updatePayload);
   };
 
   const handleAppointmentTypeChange = (

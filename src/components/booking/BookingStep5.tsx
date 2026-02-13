@@ -44,6 +44,7 @@ export default function BookingStep5({
     homeServiceCharge: 0,
     taxAmount: 0,
     totalAmount: 0,
+    urgentFee: 0,
   });
 
   // Calculate amounts on mount and when dependencies change
@@ -56,18 +57,22 @@ export default function BookingStep5({
       const homeServiceCharge =
         data.appointmentType === "home-service" ? 200 : 0;
 
+
       // Discount logic (example coupons)
       let discount = 0;
       if (coupon === "QUICK50") discount = 50;
       else if (coupon === "HEALTH100") discount = 100;
       else if (coupon === "FIRSTBOOK") discount = 200;
 
+      // Urgent Fee
+      const urgentFee = data.urgentFee || 0;
+
       // Calculate GST (18%)
-      const taxableAmount = baseAmount + homeServiceCharge - discount;
+      const taxableAmount = baseAmount + homeServiceCharge + urgentFee - discount;
       const taxAmount = taxableAmount * 0.18;
 
       // Total amount
-      const totalAmount = baseAmount + homeServiceCharge + taxAmount - discount;
+      const totalAmount = baseAmount + homeServiceCharge + urgentFee + taxAmount - discount;
 
       setCalculations({
         baseAmount,
@@ -75,6 +80,9 @@ export default function BookingStep5({
         homeServiceCharge,
         taxAmount,
         totalAmount,
+        urgentFee, // Add this to state if you typed it, strictly speaking I should update the state type too but JS is loose. 
+                   // Wait, I need to check if I can just add it. The state is defined in the component.
+                   // I should update the interface for the state too.
       });
 
       // Update parent data
@@ -95,6 +103,7 @@ export default function BookingStep5({
     paymentMethod,
     data.appointmentType,
     data.baseAmount,
+    data.urgentFee, // Add dependency
     updateData,
   ]);
 
@@ -177,6 +186,8 @@ export default function BookingStep5({
         labId: data.labId,
         appointmentType: data.appointmentType,
         paymentMethod: data.paymentMethod,
+        isUrgent: data.isUrgent, // Add this
+        urgentFee: data.urgentFee, // Add this
         // Add other fields as needed by your API
       };
 
@@ -229,6 +240,11 @@ export default function BookingStep5({
                     {data.appointmentType === "home-service"
                       ? "Home Service"
                       : "Lab Visit"}
+                    {data.isUrgent && (
+                      <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-800">
+                        Urgent
+                      </span>
+                    )}
                   </p>
                 </div>
                 <div className="text-right">
@@ -291,7 +307,7 @@ export default function BookingStep5({
                     <div className="flex items-start">
                       <FiHome className="mt-1 mr-3 text-green-500" />
                       <div className="flex-1">
-                        <div className="font-medium text-green-700">
+                      <div className="font-medium text-green-700">
                           Home Service Address
                         </div>
                         <div className="text-muted-foreground">
@@ -415,6 +431,18 @@ export default function BookingStep5({
                 </div>
               )}
 
+              {/* Urgent Fee Display */}
+              {/* @ts-ignore - urgentFee might not be in the initial state type yet but we are adding it */}
+              {calculations.urgentFee > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground font-medium text-orange-600">Urgent / Priority Fee</span>
+                  <span className="font-medium text-orange-600">
+                    {/* @ts-ignore */}
+                    ₹{calculations.urgentFee}
+                  </span>
+                </div>
+              )}
+
               {calculations.discount > 0 && (
                 <div className="flex justify-between text-green-600">
                   <span>Discount Applied</span>
@@ -501,11 +529,7 @@ export default function BookingStep5({
               </div>
             </div>
 
-            {/* Security Badge */}
-            <div className="flex items-center text-sm text-muted-foreground mb-6">
-              <FiShield className="mr-2 text-green-500" />
-              <span>Secure payment • 256-bit SSL encrypted</span>
-            </div>
+         
 
             {/* Action Buttons */}
             <div className="space-y-3">

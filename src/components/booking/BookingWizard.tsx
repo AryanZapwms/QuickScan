@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import BookingStep1 from "./BookingStep1";
 import BookingStep2 from "./BookingStep2";
 import BookingStep3 from "./BookingStep3";
 import BookingStep4 from "./BookingStep4";
 import BookingStep5 from "./BookingStep5";
+
+import BookingStepUrgency from "./BookingStepUrgency";
 
 interface BookingData {
   // Step 1: Service Selection
@@ -36,7 +38,11 @@ interface BookingData {
   previousReports: string;
   specialInstructions: string;
 
-  // Step 5: Payment
+  // Step 5: Urgency (New)
+  isUrgent: boolean;
+  urgentFee: number;
+
+  // Step 6: Payment
   couponCode: string;
   paymentMethod: string;
 }
@@ -48,6 +54,8 @@ export default function BookingWizard({
 }) {
   const { data: session } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [currentStep, setCurrentStep] = useState(1);
   const [bookingData, setBookingData] = useState<BookingData>({
     // Initialize with user data if logged in
@@ -76,6 +84,10 @@ export default function BookingWizard({
     previousReports: "",
     specialInstructions: "",
 
+    // Urgency
+    isUrgent: searchParams.get('urgent') === 'true',
+    urgentFee: 0,
+
     // Payment
     couponCode: "",
     paymentMethod: "online",
@@ -86,7 +98,7 @@ export default function BookingWizard({
   };
 
   const nextStep = () => {
-    if (currentStep < 5) {
+    if (currentStep < 6) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -134,7 +146,8 @@ export default function BookingWizard({
     { number: 2, title: "Patient Details", description: "Enter patient info" },
     { number: 3, title: "Time & Location", description: "Pick date & lab" },
     { number: 4, title: "Medical Info", description: "Add medical details" },
-    { number: 5, title: "Confirmation", description: "Review & pay" },
+    { number: 5, title: "Urgency", description: "Priority options" },
+    { number: 6, title: "Confirmation", description: "Review & pay" },
   ];
 
   return (
@@ -220,6 +233,15 @@ export default function BookingWizard({
         )}
 
         {currentStep === 5 && (
+          <BookingStepUrgency
+            data={bookingData}
+            updateData={updateBookingData}
+            nextStep={nextStep}
+            prevStep={prevStep}
+          />
+        )}
+
+        {currentStep === 6 && (
           <BookingStep5
             data={bookingData}
             updateData={updateBookingData}

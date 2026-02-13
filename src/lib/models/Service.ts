@@ -6,12 +6,17 @@ const ServiceSchema = new mongoose.Schema({
   category: { 
     type: String, 
     required: true,
-    enum: ['mri', 'ct-scan', 'x-ray', 'health-checkup', 'blood-test', 'ultrasound']
+    enum: [
+      'mri', 'ct-scan', 'x-ray', 'health-checkup', 'blood-test', 'ultrasound',
+      'mammography', 'pet-ct', 'ecg-echo', 'urine-stool', 'thyroid-lipid-diabetes',
+      'home-collection', 'lab-visit'
+    ]
   },
   description: { type: String, required: true },
   shortDescription: { type: String },
   originalPrice: { type: Number, required: true },
   discountedPrice: { type: Number },
+  urgentPrice: { type: Number, default: 500 }, // Price for urgent booking
   features: [{ type: String }],
   preparationInstructions: { type: String },
   reportTime: { type: String }, // e.g., "24 hours", "Same day"

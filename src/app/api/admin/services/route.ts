@@ -70,6 +70,7 @@ export async function GET(request: NextRequest) {
           description: service.description,
           originalPrice: service.originalPrice,
           discountedPrice: service.discountedPrice,
+          urgentPrice: service.urgentPrice || 500,
           isPopular: service.isPopular,
           isHomeService: service.isHomeService,
           labCount: service.labIds?.length || 0,

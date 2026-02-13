@@ -126,6 +126,7 @@ export default function ServicesPage() {
           isPopular: service.isPopular ? 'Yes' : 'No',
         })) || []}
         title="Medical Services"
+        onEdit={(id) => window.location.href = `/admin/services/${id}`}
       />
     </div>
   );

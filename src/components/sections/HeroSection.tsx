@@ -1,24 +1,27 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Button from '../ui/Button';
 import { FiSearch, FiMapPin, FiCalendar } from 'react-icons/fi';
 import { ALL_SERVICES_DATA } from '@/lib/data/services';
-import GridScan from '@/components/effects/GridScan'; // Direct import
+import GridScan from '@/components/effects/GridScan';
 
 const HeroSection = () => {
+  const router = useRouter();
   const [location, setLocation] = useState('Mumbai');
-  const [service, setService] = useState('MRI');
+  const [service, setService] = useState('mri'); // Default to a valid ID
 
   const services = [
-    ...ALL_SERVICES_DATA.radiology.items.map(s => s.name),
-    ...ALL_SERVICES_DATA.pathology.items.map(s => s.name),
+    ...ALL_SERVICES_DATA.radiology.items.map(s => ({ id: s.id, name: s.name })),
+    ...ALL_SERVICES_DATA.pathology.items.map(s => ({ id: s.id, name: s.name })),
   ];
 
   const locations = ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Hyderabad', 'Pune'];
 
   const handleSearch = () => {
-    console.log('Searching for:', { service, location });
+    // Redirect to booking page with selected service and location
+    router.push(`/booking?service=${service}&city=${location}`);
   };
 
   return (
@@ -89,7 +92,7 @@ const HeroSection = () => {
                       onChange={(e) => setService(e.target.value)}
                     >
                       {services.map(srv => (
-                        <option key={srv} value={srv}>{srv}</option>
+                        <option key={srv.id} value={srv.id}>{srv.name}</option>
                       ))}
                     </select>
                   </div>
