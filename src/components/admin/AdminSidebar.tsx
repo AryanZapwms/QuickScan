@@ -86,7 +86,10 @@ export default function AdminSidebar({ userRole }: AdminSidebarProps) {
        
 
         <button
-          onClick={() => signOut({ callbackUrl: window.location.origin })}
+          onClick={async () => {
+            await signOut({ redirect: false });
+            window.location.href = "/login";
+          }}
           className="flex items-center space-x-3 px-4 py-3 border-0 text-white bg-red-500 hover:text-white transition-colors duration-300 hover:bg-red-800 rounded-lg w-full"
         >
           <FiLogOut />
