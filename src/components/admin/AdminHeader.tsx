@@ -1,7 +1,8 @@
 // components/admin/AdminHeader.tsx
 "use client";
 
-import { FiBell, FiSearch } from "react-icons/fi";
+import Link from "next/link";
+import { FiBell, FiSearch, FiHome } from "react-icons/fi";
 
 interface AdminHeaderProps {
   user: {
@@ -20,6 +21,15 @@ export default function AdminHeader({ user }: AdminHeaderProps) {
         </div>
         
         <div className="flex items-center space-x-4">
+          <Link 
+            href="/"
+            className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition border border-gray-300"
+            title="Go to Home"
+          >
+            <FiHome className="text-lg" />
+            <span className="font-medium">Home</span>
+          </Link>
+          
           <button className="relative p-2 hover:bg-gray-300 hover:text-white rounded-lg border-0 bg-transparent">
             <FiBell className="text-xl" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>

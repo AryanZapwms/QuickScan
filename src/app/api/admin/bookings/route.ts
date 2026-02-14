@@ -4,25 +4,18 @@ import { auth } from "@/auth";
 import { connectDB } from "@/lib/database";
 import mongoose from "mongoose";
 
+import Booking from "@/lib/models/Booking";
+
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
 
     const allowedRoles = ["admin", "super-admin"];
-if (!session || !allowedRoles.includes(session.user?.role as string)) {
-  return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-}
+    if (!session || !allowedRoles.includes(session.user?.role as string)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     await connectDB();
-
-    // Dynamically get the Booking model
-    const Booking = mongoose.models.Booking;
-    if (!Booking) {
-      return NextResponse.json(
-        { error: "Booking model not found" },
-        { status: 500 }
-      );
-    }
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");

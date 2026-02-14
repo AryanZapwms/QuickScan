@@ -23,6 +23,7 @@ const ServiceSchema = new mongoose.Schema({
   imageUrl: { type: String },
   isPopular: { type: Boolean, default: false },
   isHomeService: { type: Boolean, default: false },
+  isActive: { type: Boolean, default: true },
   labIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Lab' }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }

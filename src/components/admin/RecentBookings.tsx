@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { FiEye, FiCheck, FiX, FiDownload, FiRefreshCw } from "react-icons/fi";
 import { toast } from "react-hot-toast";
+import BookingDetailsModal from "@/components/admin/BookingDetailsModal";
 
 interface Booking {
   id: string;
@@ -21,6 +22,7 @@ export default function RecentBookings() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<any>(null);
 
   const fetchRecentBookings = async () => {
     try {
@@ -220,8 +222,17 @@ export default function RecentBookings() {
 
                 <td className="py-4 px-4">
                   <div className="flex items-center gap-2">
-                    <ActionBtn icon={<FiEye />} />
-                    <ActionBtn icon={<FiDownload />} />
+                    <ActionBtn 
+                      icon={<FiEye />} 
+                      onClick={() => setSelectedBooking(booking)} 
+                    />
+                    <ActionBtn 
+                      icon={<FiDownload />} 
+                      onClick={() => {
+                        setSelectedBooking(booking);
+                        setTimeout(() => window.print(), 100);
+                      }} 
+                    />
 
                     {booking.status === "pending" && (
                       <>
@@ -250,6 +261,14 @@ export default function RecentBookings() {
           </div>
         )}
       </div>
+
+      {selectedBooking && (
+        <BookingDetailsModal
+          booking={selectedBooking}
+          onClose={() => setSelectedBooking(null)}
+          onRefresh={fetchRecentBookings}
+        />
+      )}
     </div>
   );
 }

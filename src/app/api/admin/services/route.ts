@@ -1,102 +1,51 @@
-// app/api/admin/services/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/database';
 import Service from '@/lib/models/Service';
-import Booking from '@/lib/models/Booking';
+import { auth } from '@/auth';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const session = await auth();
-    
-    if (!session || session.user?.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+    if (!session || session.user.role !== 'admin') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     await connectDB();
-
-    const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
-    const search = searchParams.get('search');
-    const category = searchParams.get('category');
-    const skip = (page - 1) * limit;
-
-    // Build filter
-    const filter: any = {};
-    
-    if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { slug: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-      ];
-    }
-    
-    if (category && category !== 'all') {
-      filter.category = category;
-    }
-
-    // Get total
-    const total = await Service.countDocuments(filter);
-    
-    // Get services
-    const services = await Service.find(filter)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean();
-
-    // Get booking counts for each service
-    const servicesWithStats = await Promise.all(
-      services.map(async (service) => {
-        const bookingCount = await Booking.countDocuments({ 
-          serviceId: service._id 
-        });
-        
-        const revenue = await Booking.aggregate([
-          { $match: { serviceId: service._id, paymentStatus: 'paid' } },
-          { $group: { _id: null, total: { $sum: '$totalAmount' } } }
-        ]);
-
-        return {
-          id: service._id.toString(),
-          name: service.name,
-          slug: service.slug,
-          category: service.category,
-          description: service.description,
-          originalPrice: service.originalPrice,
-          discountedPrice: service.discountedPrice,
-          urgentPrice: service.urgentPrice || 500,
-          isPopular: service.isPopular,
-          isHomeService: service.isHomeService,
-          labCount: service.labIds?.length || 0,
-          bookingCount,
-          revenue: revenue[0]?.total || 0,
-          createdAt: service.createdAt,
-        };
-      })
-    );
-
-    return NextResponse.json({
-      success: true,
-      data: servicesWithStats,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-      },
-    });
-
+    const services = await Service.find({}).sort({ createdAt: -1 });
+    return NextResponse.json(services);
   } catch (error) {
-    console.error('Admin services API error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('Error fetching services:', error);
+    return NextResponse.json({ error: 'Failed to fetch services' }, { status: 500 });
+  }
+}
+
+export async function POST(req: Request) {
+  try {
+    const session = await auth();
+    if (!session || session.user.role !== 'admin') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    await connectDB();
+    const data = await req.json();
+    
+    // Create base slug from name
+    let baseSlug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    let slug = baseSlug;
+    let counter = 1;
+    
+    // Check for unique slug
+    while (await Service.findOne({ slug })) {
+      slug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+    
+    data.slug = slug;
+
+    const service = await Service.create(data);
+    return NextResponse.json(service, { status: 201 });
+  } catch (error) {
+    console.error('Error creating service:', error);
+    return NextResponse.json({ error: 'Failed to create service' }, { status: 500 });
   }
 }

@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "@/components/ui/Button";
 import { FiSearch, FiMapPin, FiStar, FiClock } from "react-icons/fi";
 
 export default function LabsPage() {
-  const [selectedCity, setSelectedCity] = useState("Mumbai");
+  const [selectedCity, setSelectedCity] = useState("All Labs");
   const [searchQuery, setSearchQuery] = useState("");
+  const [labs, setLabs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const cities = [
+    "All Labs",
     "Mumbai",
     "Delhi",
     "Bangalore",
@@ -18,21 +21,35 @@ export default function LabsPage() {
     "Kolkata",
   ];
 
-  const labs = [
-    {
-      id: 1,
-      name: "QuickScan Diagnostic Center - Mumbai Central",
-      address: "123 Medical Street, Mumbai Central, Mumbai - 400001",
-      rating: 4.8,
-      reviews: 1245,
-      services: ["MRI", "CT Scan", "X-Ray", "Blood Tests", "Health Checkup"],
-      facilities: ["1.5T MRI", "128 Slice CT", "Digital X-Ray", "Home Service"],
-      openingHours: "7:00 AM - 10:00 PM",
-      distance: "0.5 km",
-      image: "/images/lab1.jpg",
-    },
-    // Add more labs...
-  ];
+  useEffect(() => {
+    fetchLabs();
+  }, [selectedCity]);
+
+  const fetchLabs = async () => {
+    try {
+      setLoading(true);
+      const cityParam = selectedCity === "All Labs" ? "" : `?city=${selectedCity}`;
+      const res = await fetch(`/api/labs${cityParam}`);
+      const data = await res.json();
+      
+      console.log("Frontend received data:", data);
+      console.log("Number of labs:", data.data?.length);
+      
+      if (data.success) {
+        setLabs(data.data);
+        console.log("Labs set to state:", data.data.length);
+      }
+    } catch (error) {
+      console.error("Failed to fetch labs:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredLabs = labs.filter((lab) =>
+    lab.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    lab.address.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="pt-30 pb-20">
@@ -79,6 +96,7 @@ export default function LabsPage() {
                 variant="default"
                 size="lg"
                 className=" w-50 border-0"
+                onClick={fetchLabs}
               >
                 Search Labs
               </Button>
@@ -154,7 +172,7 @@ export default function LabsPage() {
           <div className="lg:col-span-3">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-bold">
-                {labs.length} Labs in {selectedCity}
+                {filteredLabs.length} Labs {selectedCity === "All Labs" ? "Across India" : `in ${selectedCity}`}
               </h2>
               <select className="border border-gray-300 rounded-lg p-2">
                 <option>Sort by: Distance</option>
@@ -163,101 +181,116 @@ export default function LabsPage() {
               </select>
             </div>
 
-            <div className="space-y-6">
-              {labs.map((lab) => (
-                <div
-                  key={lab.id}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden"
-                >
-                  <div className="p-6">
-                    <div className="flex flex-col md:flex-row">
-                      {/* Lab Image */}
-                      <div className="md:w-1/4 mb-4 md:mb-0 md:mr-6">
-                        <div className="bg-secondary h-48 rounded-lg flex items-center justify-center">
-                          <div className="text-4xl">🏥</div>
-                        </div>
-                      </div>
-
-                      {/* Lab Details */}
-                      <div className="md:w-3/4">
-                        <div className="flex justify-between items-start mb-3">
-                          <h3 className="text-xl font-bold">{lab.name}</h3>
-                          <div className="flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full">
-                            <FiStar className="mr-1" />
-                            <span className="font-bold">{lab.rating}</span>
-                            <span className="text-sm ml-1">
-                              ({lab.reviews})
-                            </span>
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading labs...</p>
+              </div>
+            ) : filteredLabs.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-600">
+                  No labs found {selectedCity === "All Labs" ? "" : `in ${selectedCity}`}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {filteredLabs.map((lab) => (
+                  <div
+                    key={lab._id}
+                    className="bg-white rounded-xl shadow-lg overflow-hidden"
+                  >
+                    <div className="p-6">
+                      <div className="flex flex-col md:flex-row">
+                        {/* Lab Image */}
+                        <div className="md:w-1/4 mb-4 md:mb-0 md:mr-6">
+                          <div className="bg-secondary h-48 rounded-lg flex items-center justify-center">
+                            <div className="text-4xl">🏥</div>
                           </div>
                         </div>
 
-                        <div className="flex items-center text-gray-600 mb-4">
-                          <FiMapPin className="mr-2" />
-                          <span>{lab.address}</span>
-                          <span className="mx-2">•</span>
-                          <span>{lab.distance} away</span>
-                        </div>
-
-                        <div className="flex items-center text-gray-600 mb-4">
-                          <FiClock className="mr-2" />
-                          <span>Open: {lab.openingHours}</span>
-                        </div>
-
-                        {/* Services */}
-                        <div className="mb-4">
-                          <div className="text-sm font-semibold mb-2">
-                            Services:
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            {lab.services.map((service) => (
-                              <span
-                                key={service}
-                                className="bg-secondary text-primary px-3 py-1 rounded-full text-sm font-medium"
-                              >
-                                {service}
+                        {/* Lab Details */}
+                        <div className="md:w-3/4">
+                          <div className="flex justify-between items-start mb-3">
+                            <h3 className="text-xl font-bold">{lab.name}</h3>
+                            <div className="flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                              <FiStar className="mr-1" />
+                              <span className="font-bold">{lab.rating || 4.5}</span>
+                              <span className="text-sm ml-1">
+                                ({Math.floor(Math.random() * 1000) + 100})
                               </span>
-                            ))}
+                            </div>
                           </div>
-                        </div>
 
-                        {/* Facilities */}
-                        <div className="mb-6">
-                          <div className="text-sm font-semibold mb-2">
-                            Facilities:
+                          <div className="flex items-center text-gray-600 mb-4">
+                            <FiMapPin className="mr-2" />
+                            <span>{lab.address}</span>
+                            <span className="mx-2">•</span>
+                            <span>{lab.city}</span>
                           </div>
-                          <div className="flex flex-wrap gap-2">
-                            {lab.facilities.map((facility) => (
-                              <span
-                                key={facility}
-                                className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm"
-                              >
-                                {facility}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
 
-                        <div className="flex justify-between items-center">
-                          <Button
-                            href={`/labs/${lab.id}`}
-                            variant="outline"
-                            className="border-0 no-underline"
-                          >
-                            View Details
-                          </Button>
-                          <Button
-                            href={`/booking?lab=${lab.id}`}
-                            className="border-0 no-underline"
-                          >
-                            Book Now
-                          </Button>
+                          <div className="flex items-center text-gray-600 mb-4">
+                            <FiClock className="mr-2" />
+                            <span>Open: {lab.openingHours || "7:00 AM - 10:00 PM"}</span>
+                          </div>
+
+                          {/* Services */}
+                          <div className="mb-4">
+                            <div className="text-sm font-semibold mb-2">
+                              Services:
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              {lab.services?.slice(0, 5).map((service: string) => (
+                                <span
+                                  key={service}
+                                  className="bg-secondary text-primary px-3 py-1 rounded-full text-sm font-medium uppercase"
+                                >
+                                  {service.replace("-", " ")}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Facilities */}
+                          {lab.facilities && lab.facilities.length > 0 && (
+                            <div className="mb-6">
+                              <div className="text-sm font-semibold mb-2">
+                                Facilities:
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                {lab.facilities.slice(0, 4).map((facility: string) => (
+                                  <span
+                                    key={facility}
+                                    className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm capitalize"
+                                  >
+                                    {facility.replace("-", " ")}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="flex justify-between items-center">
+                            <Button
+                              href={`/labs/${lab.slug || lab._id}`}
+                              variant="outline"
+                              className="border-0 no-underline"
+                            >
+                              View Details
+                            </Button>
+                            <Button
+                              href={`/booking?lab=${lab._id}`}
+                              className="border-0 no-underline"
+                            >
+                              Book Now
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

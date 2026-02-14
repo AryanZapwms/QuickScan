@@ -1,13 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/database';
 import Service from '@/lib/models/Service';
+import { auth } from '@/auth';
 
-// GET single service
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PUT(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await auth();
     if (!session || session.user?.role !== 'admin') {
@@ -15,41 +12,24 @@ export async function GET(
     }
 
     await connectDB();
-    const { id } = await params;
-    
-    const service = await Service.findById(id);
+    const { id } = params;
+    const data = await req.json();
+
+    const service = await Service.findByIdAndUpdate(id, data, { new: true });
+
     if (!service) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 });
     }
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        id: service._id,
-        name: service.name,
-        slug: service.slug,
-        category: service.category,
-        description: service.description,
-        originalPrice: service.originalPrice,
-        discountedPrice: service.discountedPrice,
-        urgentPrice: service.urgentPrice || 500,
-        isPopular: service.isPopular,
-        isHomeService: service.isHomeService,
-        features: service.features,
-      }
-    });
-
+    return NextResponse.json(service);
   } catch (error) {
-    console.error('Error fetching service:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Error updating service:', error);
+    return NextResponse.json({ error: 'Failed to update service' }, { status: 500 });
   }
 }
 
-// UPDATE service
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await auth();
     if (!session || session.user?.role !== 'admin') {
@@ -57,30 +37,17 @@ export async function PATCH(
     }
 
     await connectDB();
-    const { id } = await params;
-    const updateData = await request.json();
+    const { id } = params;
 
-    // Prevent updating immutable fields if necessary, or sanitize
-    // distinct from create, we just update what's passed
-    
-    const service = await Service.findByIdAndUpdate(
-      id,
-      { $set: updateData },
-      { new: true, runValidators: true }
-    );
+    const service = await Service.findByIdAndDelete(id);
 
     if (!service) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 });
     }
 
-    return NextResponse.json({
-      success: true,
-      data: service,
-      message: 'Service updated successfully'
-    });
-
+    return NextResponse.json({ success: true, message: 'Service deleted successfully' });
   } catch (error) {
-    console.error('Error updating service:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Error deleting service:', error);
+    return NextResponse.json({ error: 'Failed to delete service' }, { status: 500 });
   }
 }

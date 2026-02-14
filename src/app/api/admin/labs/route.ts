@@ -107,3 +107,49 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export async function POST(request: NextRequest) {
+  try {
+    const session = await auth();
+    
+    if (!session || session.user?.role !== 'admin') {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    await connectDB();
+    const data = await request.json();
+
+    // Generate slug from name
+    let slug = data.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    // Ensure unique slug
+    let counter = 1;
+    let uniqueSlug = slug;
+    while (await Lab.findOne({ slug: uniqueSlug })) {
+      uniqueSlug = `${slug}-${counter}`;
+      counter++;
+    }
+
+    data.slug = uniqueSlug;
+
+    const lab = await Lab.create(data);
+
+    return NextResponse.json({
+      success: true,
+      data: lab,
+    }, { status: 201 });
+
+  } catch (error) {
+    console.error('Create lab error:', error);
+    return NextResponse.json(
+      { error: 'Failed to create lab' },
+      { status: 500 }
+    );
+  }
+}

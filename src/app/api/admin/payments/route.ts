@@ -72,9 +72,29 @@ export async function GET(request: NextRequest) {
       bookingStatus: payment.status,
     }));
 
+    // Calculate stats
+    const stats = await Booking.aggregate([
+      {
+        $group: {
+          _id: '$paymentStatus',
+          total: { $sum: '$totalAmount' },
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    const totalRevenue = await Booking.aggregate([
+      { $match: { paymentStatus: 'paid' } },
+      { $group: { _id: null, total: { $sum: '$totalAmount' } } }
+    ]);
+
     return NextResponse.json({
       success: true,
       data: formattedPayments,
+      stats: {
+        total: totalRevenue[0]?.total || 0,
+        breakdown: stats,
+      },
       pagination: {
         page,
         limit,

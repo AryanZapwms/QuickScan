@@ -4,11 +4,16 @@ import { useState } from "react";
 import DataTable from "@/components/admin/DataTable";
 import { useAdminBookings } from "@/hooks/useAdminBookings";
 import { FiSearch, FiFilter } from "react-icons/fi";
+import BookingDetailsModal from "@/components/admin/BookingDetailsModal";
+import EditBookingModal from "@/components/admin/EditBookingModal";
+import { toast } from "react-hot-toast";
 
 export default function BookingsPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedBooking, setSelectedBooking] = useState<any>(null);
+  const [editingBooking, setEditingBooking] = useState<any>(null);
 
   const {
     data: bookings,
@@ -29,11 +34,25 @@ export default function BookingsPage() {
     { key: "status", label: "Status" },
   ];
 
-  const handleView = (id: string) => console.log("View booking:", id);
-  const handleEdit = (id: string) => console.log("Edit booking:", id);
-  const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this booking?")) {
-      console.log("Delete booking:", id);
+  const handleView = (id: string) => {
+    const booking = bookings?.find(b => b.id === id);
+    if (booking) setSelectedBooking(booking);
+  };
+  
+  const handleEdit = (id: string) => {
+    const booking = bookings?.find(b => b.id === id);
+    if (booking) setEditingBooking(booking);
+  };
+  
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this booking?")) return;
+    try {
+      const res = await fetch(`/api/admin/bookings/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      toast.success("Booking deleted");
+      window.location.reload();
+    } catch {
+      toast.error("Failed to delete booking");
     }
   };
 
@@ -162,6 +181,22 @@ export default function BookingsPage() {
           onDelete={handleDelete}
         />
       </div>
+
+      {selectedBooking && (
+        <BookingDetailsModal
+          booking={selectedBooking}
+          onClose={() => setSelectedBooking(null)}
+          onRefresh={() => window.location.reload()}
+        />
+      )}
+
+      {editingBooking && (
+        <EditBookingModal
+          booking={editingBooking}
+          onClose={() => setEditingBooking(null)}
+          onRefresh={() => window.location.reload()}
+        />
+      )}
     </div>
   );
 }

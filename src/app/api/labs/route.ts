@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     await connectDB();
 
     const { searchParams } = new URL(request.url);
-    const city = searchParams.get("city") || "Mumbai";
+    const city = searchParams.get("city");
     const service = searchParams.get("service");
     const limit = parseInt(searchParams.get("limit") || "50");
 
@@ -16,8 +16,8 @@ export async function GET(request: NextRequest) {
 
     let query: any = { isActive: true };
 
-    // Case-insensitive city search
-    if (city) {
+    // Case-insensitive city search - only if city is provided
+    if (city && city !== "All Labs") {
       query.city = { $regex: new RegExp(`^${city}$`, "i") };
     }
 
@@ -52,23 +52,24 @@ export async function GET(request: NextRequest) {
       query.services = { $in: dbServices };
     }
 
-    console.log("📋 Query:", query);
+    console.log("📋 Query:", JSON.stringify(query, null, 2));
 
     const labs = await Lab.find(query).limit(limit).sort({ rating: -1 });
 
     console.log(`✅ Found ${labs.length} labs`);
+    console.log("Labs data:", labs.map(l => ({ name: l.name, city: l.city, isActive: l.isActive })));
 
-    // If no labs found, return mock data for development
-    if (labs.length === 0) {
-      console.log("⚠️ No labs found, returning mock data");
-      const mockLabs = generateMockLabs(city, service);
-      return NextResponse.json({
-        success: true,
-        data: mockLabs,
-        count: mockLabs.length,
-        message: "Development: Using mock data",
-      });
-    }
+    // Temporarily disabled mock data to debug
+    // if (labs.length === 0) {
+    //   console.log("⚠️ No labs found, returning mock data");
+    //   const mockLabs = generateMockLabs(city, service);
+    //   return NextResponse.json({
+    //     success: true,
+    //     data: mockLabs,
+    //     count: mockLabs.length,
+    //     message: "Development: Using mock data",
+    //   });
+    // }
 
     return NextResponse.json({
       success: true,

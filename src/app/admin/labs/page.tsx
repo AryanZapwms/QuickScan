@@ -1,20 +1,23 @@
-// app/admin/labs/page.tsx
 "use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import DataTable from "@/components/admin/DataTable";
-import { useAdminLabs } from '@/hooks/admin/useLabs';
-import { FiSearch } from 'react-icons/fi';
+import { useAdminLabs } from "@/hooks/admin/useLabs";
+import { FiSearch, FiPlus } from "react-icons/fi";
+import LabForm from "@/components/admin/LabForm";
+import { toast } from "react-hot-toast";
 
 export default function LabsPage() {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
-  const [cityFilter, setCityFilter] = useState('all');
+  const [search, setSearch] = useState("");
+  const [cityFilter, setCityFilter] = useState("all");
+  const [showForm, setShowForm] = useState(false);
+  const [editingLab, setEditingLab] = useState<any>(null);
 
-  const { data: labs, loading, pagination } = useAdminLabs({
+  const { data: labs, loading, pagination, refetch } = useAdminLabs({
     page,
     search,
-    city: cityFilter !== 'all' ? cityFilter : undefined,
+    city: cityFilter !== "all" ? cityFilter : undefined,
   });
 
   const columns = [
@@ -28,7 +31,44 @@ export default function LabsPage() {
   ];
 
   // Extract unique cities for filter
-  const uniqueCities = Array.from(new Set(labs?.map(lab => lab.city) || []));
+  const uniqueCities = Array.from(new Set(labs?.map((lab) => lab.city) || []));
+
+  const handleView = (id: string) => {
+    const lab = labs?.find((l) => l.id === id);
+    if (lab) {
+      setEditingLab(lab);
+      setShowForm(true);
+    }
+  };
+
+  const handleEdit = (id: string) => {
+    const lab = labs?.find((l) => l.id === id);
+    if (lab) {
+      setEditingLab(lab);
+      setShowForm(true);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this lab?")) return;
+    try {
+      const res = await fetch(`/api/admin/labs/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      toast.success("Lab deleted successfully");
+      refetch();
+    } catch {
+      toast.error("Failed to delete lab");
+    }
+  };
+
+  const handleFormClose = () => {
+    setShowForm(false);
+    setEditingLab(null);
+  };
+
+  const handleFormSuccess = () => {
+    refetch();
+  };
 
   if (loading) {
     return (
@@ -49,13 +89,22 @@ export default function LabsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Lab Centers Management</h1>
-        <p className="text-gray-600">Manage partner lab centers and diagnostics</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Lab Centers Management</h1>
+          <p className="text-gray-600">Manage partner lab centers and diagnostics</p>
+        </div>
+        <button
+          onClick={() => setShowForm(true)}
+          className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          <FiPlus />
+          <span>Add Lab</span>
+        </button>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col md:flex-row gap-16">
+      <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1 max-w-md">
           <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input
@@ -63,39 +112,41 @@ export default function LabsPage() {
             placeholder="Search labs..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
         <select
           value={cityFilter}
           onChange={(e) => setCityFilter(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg"
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           <option value="all">All Cities</option>
-          {uniqueCities.map(city => (
-            <option key={city} value={city}>{city}</option>
+          {uniqueCities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
           ))}
         </select>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow">
+        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
           <h3 className="text-sm font-medium text-gray-500">Total Labs</h3>
           <p className="text-2xl font-bold mt-2">{pagination.total || 0}</p>
           <p className="text-green-600 text-sm mt-1">+5% from last month</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
+        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
           <h3 className="text-sm font-medium text-gray-500">Active Labs</h3>
           <p className="text-2xl font-bold mt-2">
-            {labs?.filter(l => l.isActive).length || 0}
+            {labs?.filter((l) => l.isActive).length || 0}
           </p>
           <p className="text-green-600 text-sm mt-1">+4% from last month</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h3 className="text-sm font-medium text-gray-500">Under Review</h3>
+        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+          <h3 className="text-sm font-medium text-gray-500">Inactive Labs</h3>
           <p className="text-2xl font-bold mt-2">
-            {labs?.filter(l => !l.isActive).length || 0}
+            {labs?.filter((l) => !l.isActive).length || 0}
           </p>
           <p className="text-yellow-600 text-sm mt-1">+2 from last month</p>
         </div>
@@ -104,18 +155,33 @@ export default function LabsPage() {
       {/* DataTable */}
       <DataTable
         columns={columns}
-        data={labs?.map(lab => ({
-          id: lab.id,
-          name: lab.name,
-          city: lab.city,
-          phone: lab.phone,
-          services: lab.services?.slice(0, 2).join(', ') + (lab.services?.length > 2 ? '...' : ''),
-          bookingCount: lab.bookingCount,
-          revenue: `₹${(lab.revenue || 0).toLocaleString()}`,
-          isActive: lab.isActive ? 'Active' : 'Inactive',
-        })) || []}
+        data={
+          labs?.map((lab) => ({
+            id: lab.id,
+            name: lab.name,
+            city: lab.city,
+            phone: lab.phone,
+            services:
+              lab.services?.slice(0, 2).join(", ") +
+              (lab.services?.length > 2 ? "..." : ""),
+            bookingCount: lab.bookingCount,
+            revenue: `₹${(lab.revenue || 0).toLocaleString()}`,
+            isActive: lab.isActive ? "Active" : "Inactive",
+          })) || []
+        }
         title="Partner Labs"
+        onView={handleView}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
       />
+
+      {showForm && (
+        <LabForm
+          lab={editingLab}
+          onClose={handleFormClose}
+          onSuccess={handleFormSuccess}
+        />
+      )}
     </div>
   );
 }
