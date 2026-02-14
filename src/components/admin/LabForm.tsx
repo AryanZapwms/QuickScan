@@ -41,8 +41,8 @@ export default function LabForm({ lab, onClose, onSuccess }: LabFormProps) {
     try {
       const payload = {
         ...formData,
-        services: formData.services.split(",").map((s) => s.trim()).filter(Boolean),
-        facilities: formData.facilities.split(",").map((f) => f.trim()).filter(Boolean),
+        services: formData.services.split(",").map((s: string) => s.trim()).filter(Boolean),
+        facilities: formData.facilities.split(",").map((f: string) => f.trim()).filter(Boolean),
         coordinates: {
           lat: formData.coordinates.lat ? parseFloat(formData.coordinates.lat as any) : undefined,
           lng: formData.coordinates.lng ? parseFloat(formData.coordinates.lng as any) : undefined,
