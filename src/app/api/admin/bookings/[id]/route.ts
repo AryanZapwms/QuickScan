@@ -21,6 +21,21 @@ export async function PUT(req: Request, props: { params: Promise<{ id: string }>
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
     }
 
+    // Handle Completion Workflows
+    if (data.status === 'completed') {
+      const { CommissionService } = await import('@/lib/commissions');
+      const { NotificationService } = await import('@/lib/notifications');
+      
+      await CommissionService.processBookingCompletion(id);
+      
+      await NotificationService.sendReportReady({
+        email: booking.patientEmail,
+        patientName: booking.patientName,
+        serviceName: booking.serviceName,
+        reportUrl: booking.reportUrl || `${process.env.NEXTAUTH_URL}/dashboard`,
+      });
+    }
+
     return NextResponse.json({ success: true, data: booking });
   } catch (error) {
     console.error('Error updating booking:', error);

@@ -29,6 +29,7 @@ const LabSchema = new mongoose.Schema({
   images: [{ type: String }],
   isHomeServiceAvailable: { type: Boolean, default: false },
   isActive: { type: Boolean, default: true },
+  adminId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Linked lab-admin
   createdAt: { type: Date, default: Date.now }
 });
 

@@ -17,20 +17,42 @@ export default function BookingStep4({ data, updateData, nextStep, prevStep }: S
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (!files) return;
+    if (!files || files.length === 0) return;
 
     setUploading(true);
-    // Simulate file upload
-    setTimeout(() => {
-      const newFiles = Array.from(files).map(file => file.name);
-      setUploadedFiles(prev => [...prev, ...newFiles]);
-      setUploading(false);
+    const newFiles: string[] = [];
+
+    try {
+      for (const file of Array.from(files)) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("folder", "prescriptions");
+
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          newFiles.push(result.url);
+        } else {
+          console.error("Upload failed for", file.name, result.message);
+        }
+      }
+
+      setUploadedFiles((prev) => [...prev, ...newFiles]);
       
-      // Update data with file references
-      updateData({ 
-        previousReports: [...(data.previousReports || []), ...newFiles].join(', ')
+      // Update data with URLs
+      const existing = data.previousReports ? data.previousReports.split(', ') : [];
+      updateData({
+        previousReports: [...existing, ...newFiles].join(', '),
       });
-    }, 1000);
+    } catch (error) {
+      console.error("Upload error:", error);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleRemoveFile = (filename: string) => {

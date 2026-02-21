@@ -1,6 +1,7 @@
 "use client";
 
 import { FiX, FiDownload, FiCreditCard, FiCalendar, FiUser, FiFileText } from "react-icons/fi";
+import { toast } from "react-hot-toast";
 
 interface PaymentDetailsModalProps {
   payment: any;
@@ -150,6 +151,28 @@ export default function PaymentDetailsModal({ payment, onClose }: PaymentDetails
         {/* Footer */}
         <div className="p-6 border-t bg-gray-50 rounded-b-2xl">
           <div className="flex justify-end space-x-3">
+            {payment.status === "paid" && (
+              <button
+                onClick={async () => {
+                  if (confirm("Are you sure you want to refund this payment?")) {
+                    try {
+                      const res = await fetch(`/api/admin/payments/${payment.id}/refund`, { method: 'POST' });
+                      if (res.ok) {
+                        toast.success("Refund processed successfully");
+                        onClose();
+                      } else {
+                        throw new Error("Refund failed");
+                      }
+                    } catch (err) {
+                      toast.error("Failed to process refund");
+                    }
+                  }
+                }}
+                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition"
+              >
+                Process Refund
+              </button>
+            )}
             <button
               onClick={onClose}
               className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition"

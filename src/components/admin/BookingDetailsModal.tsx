@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FiX, FiCheck, FiXCircle, FiPrinter, FiCalendar, FiUser, FiDollarSign } from "react-icons/fi";
+import { FiX, FiCheck, FiXCircle, FiPrinter, FiCalendar, FiUser, FiDollarSign, FiFileText, FiDownload } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 
 interface BookingDetails {
@@ -25,6 +25,9 @@ interface BookingDetails {
   status: string;
   paymentStatus: string;
   paymentMethod?: string;
+  referralCode?: string;
+  reportUrl?: string;
+  reportUploadedAt?: string;
   notes?: string;
   createdAt?: string;
 }
@@ -167,7 +170,13 @@ export default function BookingDetailsModal({
               {booking.patientGender && (
                 <div>
                   <p className="text-sm text-gray-500">Gender</p>
-                  <p className="font-medium capitalize">{booking.patientGender}</p>
+                <p className="font-medium capitalize">{booking.patientGender}</p>
+              </div>
+              )}
+              {booking.referralCode && (
+                <div>
+                  <p className="text-sm text-gray-500">Referral Code</p>
+                  <p className="font-bold text-blue-600 uppercase">{booking.referralCode}</p>
                 </div>
               )}
             </div>
@@ -236,6 +245,29 @@ export default function BookingDetailsModal({
               )}
             </div>
           </div>
+
+          {/* Reports */}
+          {booking.reportUrl && (
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+              <h3 className="text-lg font-semibold text-blue-900 mb-3 flex items-center">
+                <FiFileText className="mr-2" /> Diagnostic Report
+              </h3>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-blue-700">Uploaded on {formatDate(booking.reportUploadedAt || "")}</p>
+                </div>
+                <a 
+                  href={booking.reportUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+                >
+                  <FiDownload />
+                  <span>View Report</span>
+                </a>
+              </div>
+            </div>
+          )}
 
           {/* Notes */}
           {booking.notes && (

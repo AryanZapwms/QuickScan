@@ -18,9 +18,13 @@ const UserSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   role: {
     type: String,
-    enum: ["user", "admin", "lab-admin", "super-admin"], // Added super-admin
+    enum: ["user", "admin", "lab-admin", "super-admin", "sales-executive", "partner-staff"], // Expanded roles
     default: "user",
   },
+  referredBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  referralCode: { type: String, unique: true, sparse: true },
+  commissionRate: { type: Number, default: 0 }, // For Sales Executives
+  labId: { type: mongoose.Schema.Types.ObjectId, ref: "Lab" }, // For Lab Partners
   emailVerified: { type: Date },
   accounts: [],
   sessions: [],
@@ -29,4 +33,7 @@ const UserSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.models.User || mongoose.model("User", UserSchema);
+// Forcing the model to re-register to pick up new enum values in development
+delete mongoose.models.User;
+const User = mongoose.model("User", UserSchema);
+export default User;

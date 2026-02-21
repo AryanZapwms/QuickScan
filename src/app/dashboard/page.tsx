@@ -38,19 +38,29 @@ export default function DashboardPage() {
       return;
     }
 
-   // If user is admin, lab-admin, or super-admin, redirect to admin dashboard
-  const adminRoles = ["admin", "lab-admin", "super-admin"];
-  if (session?.user?.role && adminRoles.includes(session.user.role as string)) {
-    console.log(`${session.user.role} detected, redirecting to /admin`);
-    router.push("/admin");
-    return;
-  }
-  
-    // If not admin, proceed with regular dashboard
-    if (session && session.user?.role !== "admin") {
-      setIsCheckingAdmin(false);
-      fetchBookings();
+    // Role-based redirection
+    if (session?.user?.role) {
+      const role = session.user.role as string;
+      
+      if (["admin", "super-admin"].includes(role)) {
+        router.push("/admin");
+        return;
+      }
+      
+      if (role === "sales-executive") {
+        router.push("/sales");
+        return;
+      }
+      
+      if (["lab-admin", "partner-staff"].includes(role)) {
+        router.push("/partner");
+        return;
+      }
     }
+
+    // Default: Patient dashboard
+    setIsCheckingAdmin(false);
+    fetchBookings();
   }, [status, session, router]);
 
   const fetchBookings = async () => {
@@ -692,28 +702,80 @@ export default function DashboardPage() {
 
             {activeTab === "reports" && (
               <div className="bg-white rounded-xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold mb-6">My Reports</h2>
-                <div className="text-center py-12">
-                  <FiFileText className="text-6xl text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-600">Reports feature coming soon!</p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    You'll be able to view and download all your medical reports
-                    here
-                  </p>
-                </div>
+                <h2 className="text-2xl font-bold mb-6">My Medical Reports</h2>
+                {bookings.filter(b => b.status === "completed").length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {bookings.filter(b => b.status === "completed").map((booking) => (
+                      <div key={booking._id} className="border border-slate-100 p-4 rounded-xl hover:bg-slate-50 transition-colors flex justify-between items-center text-left">
+                        <div>
+                          <p className="font-bold text-slate-900">{booking.serviceName}</p>
+                          <p className="text-xs text-slate-500">Date: {new Date(booking.appointmentDate).toLocaleDateString()}</p>
+                        </div>
+                        {booking.reportUrl ? (
+                          <a 
+                            href={booking.reportUrl} 
+                            target="_blank" 
+                            className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                            title="Download Report"
+                          >
+                            <FiDownload className="text-lg" />
+                          </a>
+                        ) : (
+                          <span className="text-xs text-amber-600 font-bold bg-amber-50 px-3 py-1 rounded-full">Coming Soon</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <FiFileText className="text-6xl text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-600">No reports available yet.</p>
+                  </div>
+                )}
               </div>
             )}
 
             {activeTab === "billing" && (
-              <div className="bg-white rounded-xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold mb-6">Billing History</h2>
-                <div className="text-center py-12">
-                  <FiDollarSign className="text-6xl text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-600">Billing feature coming soon!</p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    View your payment history and download invoices
-                  </p>
-                </div>
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold mb-6 text-left">Payment History</h2>
+                {bookings.filter(b => b.paymentStatus === "paid").length > 0 ? (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                      <thead className="bg-slate-50 text-slate-500 text-xs font-bold uppercase">
+                        <tr>
+                          <th className="px-6 py-4">Transaction ID</th>
+                          <th className="px-6 py-4">Service</th>
+                          <th className="px-6 py-4">Amount</th>
+                          <th className="px-6 py-4">Date</th>
+                          <th className="px-6 py-4">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-50 text-left">
+                        {bookings.filter(b => b.paymentStatus === "paid").map((booking) => (
+                          <tr key={booking._id} className="hover:bg-slate-50 transition-colors">
+                            <td className="px-6 py-4 font-mono text-xs">{booking.paymentId || 'N/A'}</td>
+                            <td className="px-6 py-4 text-sm font-medium">{booking.serviceName}</td>
+                            <td className="px-6 py-4 font-bold">₹{booking.totalAmount}</td>
+                            <td className="px-6 py-4 text-sm text-slate-500">{new Date(booking.paymentDate || booking.createdAt).toLocaleDateString()}</td>
+                            <td className="px-6 py-4">
+                              <button 
+                                onClick={() => downloadReceipt(booking)}
+                                className="text-blue-600 hover:text-blue-800 text-sm font-bold flex items-center"
+                              >
+                                <FiDownload className="mr-1" /> Receipt
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                     <FiDollarSign className="text-6xl text-gray-300 mx-auto mb-4" />
+                     <p className="text-gray-600">No payment history found.</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

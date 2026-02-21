@@ -65,7 +65,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-lg">
+        <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-blue-600">
           <h3 className="text-sm font-medium text-gray-500">Active Patients</h3>
           <p className="text-3xl font-bold mt-2">
             {stats?.patients?.total?.toLocaleString() || 0}
@@ -75,14 +75,24 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-lg">
+        <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-emerald-600">
           <h3 className="text-sm font-medium text-gray-500">Lab Centers</h3>
           <p className="text-3xl font-bold mt-2">
             {stats?.labs?.total?.toLocaleString() || 0}
           </p>
-          <div className="flex items-center mt-2">
-            <span className="text-green-600 text-sm">↑ 5% from last month</span>
-          </div>
+          <p className="text-xs text-slate-500 mt-2">92% report completion rate</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-indigo-600">
+          <h3 className="text-sm font-medium text-gray-500">Referral Revenue</h3>
+          <p className="text-3xl font-bold mt-2">₹42,500</p>
+          <p className="text-xs text-blue-600 mt-2">Strong growth in sales channel</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow-lg border-l-4 border-amber-600">
+          <h3 className="text-sm font-medium text-gray-500">Pending Payouts</h3>
+          <p className="text-3xl font-bold mt-2">₹8,120</p>
+          <p className="text-xs text-amber-600 mt-2">Review ready for settlement</p>
         </div>
       </div>
 

@@ -8,7 +8,7 @@ import BookingStep2 from "./BookingStep2";
 import BookingStep3 from "./BookingStep3";
 import BookingStep4 from "./BookingStep4";
 import BookingStep5 from "./BookingStep5";
-
+import { toast } from "react-hot-toast";
 import BookingStepUrgency from "./BookingStepUrgency";
 
 interface BookingData {
@@ -57,6 +57,7 @@ export default function BookingWizard({
   const searchParams = useSearchParams();
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [bookingData, setBookingData] = useState<BookingData>({
     // Initialize with user data if logged in
     patientName: session?.user?.name || "",
@@ -111,6 +112,7 @@ export default function BookingWizard({
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       console.log("Submitting booking:", bookingData);
 
       const response = await fetch("/api/bookings", {
@@ -133,11 +135,13 @@ export default function BookingWizard({
           router.push(`/booking/success?bookingId=${data.bookingId}`);
         }
       } else {
-        alert("Booking failed: " + data.message);
+        toast.error(data.message || "Booking failed"); // Error toast
       }
     } catch (error) {
-      console.error("Booking error:", error);
-      alert("Booking failed. Please try again.");
+      console.error("Booking submission error:", error);
+      toast.error("Booking failed. Please try again."); // Error toast
+    } finally {
+      setLoading(false); // Set loading to false after submission attempt
     }
   };
 

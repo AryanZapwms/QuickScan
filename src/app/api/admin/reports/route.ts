@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { connectDB } from '@/lib/database';
 import Booking from '@/lib/models/Booking';
+import Commission from '@/lib/models/Commission';
 
 export async function GET(request: NextRequest) {
   try {
@@ -104,6 +105,17 @@ export async function GET(request: NextRequest) {
 
     const totalBookings = await Booking.countDocuments({ createdAt: { $gte: startDate } });
 
+    // Commission Stats
+    const totalCommissions = await Commission.aggregate([
+      { $match: { createdAt: { $gte: startDate } } },
+      { $group: { _id: null, total: { $sum: '$amount' } } }
+    ]);
+
+    const commissionsByStatus = await Commission.aggregate([
+      { $match: { createdAt: { $gte: startDate } } },
+      { $group: { _id: '$status', count: { $sum: 1 }, total: { $sum: '$amount' } } }
+    ]);
+
     return NextResponse.json({
       success: true,
       data: {
@@ -111,6 +123,10 @@ export async function GET(request: NextRequest) {
         bookingStats,
         servicePerformance,
         paymentMethods,
+        commissions: {
+          total: totalCommissions[0]?.total || 0,
+          breakdown: commissionsByStatus
+        },
         totals: {
           revenue: totalRevenue[0]?.total || 0,
           bookings: totalBookings,

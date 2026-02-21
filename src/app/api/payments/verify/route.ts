@@ -59,6 +59,23 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Send Confirmation Notification
+    try {
+      const { NotificationService } = await import('@/lib/notifications');
+      await NotificationService.sendBookingConfirmation({
+        email: booking.patientEmail,
+        phone: booking.patientPhone,
+        patientName: booking.patientName,
+        bookingId: booking.bookingId,
+        serviceName: booking.serviceName,
+        appointmentDate: booking.appointmentDate.toLocaleDateString(),
+        timeSlot: booking.timeSlot,
+      });
+    } catch (notifError) {
+      console.error('Failed to send confirmation notification:', notifError);
+      // Don't fail the request if notification fails
+    }
     
     return NextResponse.json({
       success: true,

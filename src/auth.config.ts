@@ -15,12 +15,26 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/admin');
+      const role = auth?.user?.role;
       
-      if (isOnDashboard) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
+      const isAdminRoute = nextUrl.pathname.startsWith('/admin');
+      const isSalesRoute = nextUrl.pathname.startsWith('/sales');
+      const isPartnerRoute = nextUrl.pathname.startsWith('/partner');
+      const isDashboardRoute = nextUrl.pathname.startsWith('/dashboard');
+
+      if (isAdminRoute) {
+        return isLoggedIn && (role === 'admin' || role === 'super-admin');
       }
+      if (isSalesRoute) {
+        return isLoggedIn && role === 'sales-executive';
+      }
+      if (isPartnerRoute) {
+        return isLoggedIn && (role === 'lab-admin' || role === 'partner-staff');
+      }
+      if (isDashboardRoute) {
+        return isLoggedIn;
+      }
+
       return true;
     },
     async jwt({ token, user }) {

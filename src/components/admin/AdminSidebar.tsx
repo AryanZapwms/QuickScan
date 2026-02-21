@@ -13,6 +13,8 @@ import {
   FiBarChart2,
   FiSettings,
   FiLogOut,
+  FiPercent,
+  FiTrendingUp,
 } from "react-icons/fi";
 import { signOut } from "next-auth/react";
 
@@ -24,6 +26,9 @@ const adminNavItems = [
   { name: "Patients", href: "/admin/patients", icon: FiUsers },
   { name: "Labs", href: "/admin/labs", icon: FiBriefcase },
   { name: "Services", href: "/admin/services", icon: FiFileText },
+  { name: "Partners", href: "/admin/partners", icon: FiBriefcase },
+  { name: "Sales Team", href: "/admin/sales", icon: FiTrendingUp },
+  { name: "Commissions", href: "/admin/commissions", icon: FiPercent },
   { name: "Payments", href: "/admin/payments", icon: FiDollarSign },
   { name: "Reports", href: "/admin/reports", icon: FiBarChart2 },
   { name: "Settings", href: "/admin/settings", icon: FiSettings },
