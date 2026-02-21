@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const user = await User.findById(userId);
 
     // Get total referrals (bookings with this user's referral code)
-    const referralCode = user.referralCode;
+    const referralCode = user?.referralCode;
     const totalReferrals = await Booking.countDocuments({ referralCode });
     
     // Get active this month
@@ -31,13 +31,13 @@ export async function GET(request: NextRequest) {
 
     // Get pending payouts
     const pendingCommissions = await Commission.aggregate([
-      { $match: { userId: user._id, status: { $ne: "paid" } } },
+      { $match: { userId: user?._id, status: { $ne: "paid" } } },
       { $group: { _id: null, total: { $sum: "$amount" } } }
     ]);
 
     // Calculate level (mock logic based on total earnings)
     const totalEarnings = await Commission.aggregate([
-      { $match: { userId: user._id, status: "paid" } },
+      { $match: { userId: user?._id, status: "paid" } },
       { $group: { _id: null, total: { $sum: "$amount" } } }
     ]);
     

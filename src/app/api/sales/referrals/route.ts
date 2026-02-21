@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
 
     await connectDB();
     const user = await User.findById(session.user.id);
-    const referralCode = user.referralCode;
+    const referralCode = user?.referralCode;
 
     // Get all bookings made with this referral code
     const bookings = await Booking.find({ referralCode })
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       .select("patientName createdAt totalAmount status");
 
     // Get associated commissions to show specific earnings per patient
-    const commissions = await Commission.find({ userId: user._id })
+    const commissions = await Commission.find({ userId: user?._id })
       .select("bookingId amount status");
 
     // Map them together

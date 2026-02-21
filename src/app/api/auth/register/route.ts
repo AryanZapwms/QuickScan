@@ -33,17 +33,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 🔑 CRITICAL: Hash the password
-    console.log("🔑 Hashing password...");
+    // Hash the password
     const hashedPassword = await bcrypt.hash(body.password, 12);
-    console.log("✅ Password hashed:", hashedPassword.substring(0, 30) + "...");
 
     // Create user
     const user = new User({
       name: body.name,
       email: body.email,
       phone: body.phone,
-      password: hashedPassword, // Hashed password
+      password: hashedPassword,
       isVerified: false,
       role: "user",
       createdAt: new Date(),
@@ -51,25 +49,6 @@ export async function POST(request: NextRequest) {
 
     await user.save();
     console.log("✅ User created:", user.email);
-
-    // After user.save(), add:
-    console.log("✅ User saved, verifying...");
-
-    // Force immediate read from database
-    const verifiedUser = await User.findOne({ email: body.email }).lean();
-    console.log("🔍 Verified stored data:", {
-      email: verifiedUser.email,
-      storedHash: verifiedUser.password,
-      storedHashPrefix: verifiedUser.password.substring(0, 30),
-      expectedHashPrefix: hashedPassword.substring(0, 30),
-      match: verifiedUser.password === hashedPassword,
-    });
-
-    if (verifiedUser.password !== hashedPassword) {
-      console.error("🚨 CRITICAL: Hash mismatch!");
-      console.error("Expected:", hashedPassword);
-      console.error("Actual:", verifiedUser.password);
-    }
 
     // Remove password from response
     const userResponse = user.toObject();

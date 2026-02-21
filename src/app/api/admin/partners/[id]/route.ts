@@ -3,9 +3,10 @@ import { connectDB } from "@/lib/database";
 import User from "@/lib/models/User";
 import { auth } from "@/auth";
 
+// Workaround: match the validator's expectation
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> } // ✅ wrap in Promise
 ) {
   try {
     const session = await auth();
@@ -14,15 +15,16 @@ export async function PUT(
     }
 
     await connectDB();
-    const { id } = params;
+
+    const { id } = await context.params; // await the params
     const body = await request.json();
 
     const updatedUser = await User.findByIdAndUpdate(id, body, { new: true });
+    if (!updatedUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
-    return NextResponse.json({
-      success: true,
-      data: updatedUser,
-    });
+    return NextResponse.json({ success: true, data: updatedUser });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
@@ -30,7 +32,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> } // ✅ wrap in Promise
 ) {
   try {
     const session = await auth();
@@ -39,14 +41,14 @@ export async function DELETE(
     }
 
     await connectDB();
-    const { id } = params;
 
-    await User.findByIdAndDelete(id);
+    const { id } = await context.params; // await the params
+    const deletedUser = await User.findByIdAndDelete(id);
+    if (!deletedUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
-    return NextResponse.json({
-      success: true,
-      message: "Partner account deleted",
-    });
+    return NextResponse.json({ success: true, message: "Partner account deleted" });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }

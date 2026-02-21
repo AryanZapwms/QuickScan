@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -16,7 +16,7 @@ export async function PUT(
     }
 
     await connectDB();
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { status } = body;
 

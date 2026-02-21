@@ -7,13 +7,14 @@ import { auth } from "@/auth";
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
-    if (!session || !["lab-admin", "partner-staff"].includes(session.user.role)) {
+    const role = session?.user?.role;
+if (!session || !role || !["lab-admin", "partner-staff"].includes(role)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await connectDB();
     const user = await User.findById(session.user.id);
-    const labId = user.labId;
+    const labId = user?.labId;
 
     if (!labId) {
       return NextResponse.json({ error: "Lab not assigned" }, { status: 400 });

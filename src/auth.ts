@@ -31,11 +31,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
-
+       if (!user.password) {
+  return null;
+}
+const isPasswordValid = await bcrypt.compare(
+  credentials.password as string,
+  user.password
+);
         if (!isPasswordValid) {
           console.log("Password is invalid  " + isPasswordValid);
           return null;
